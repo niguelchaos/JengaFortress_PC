@@ -62,7 +62,13 @@ public class Player : NetworkBehaviour
 
     private void Start()
     {
-        
+        if (IsHost || IsServer)
+        {
+            playerNum = PlayerNum.P1;
+        }
+        else {
+            playerNum = PlayerNum.P2;
+        }
     }
 
     public PlayerNum GetPlayerNum() { return playerNum;}

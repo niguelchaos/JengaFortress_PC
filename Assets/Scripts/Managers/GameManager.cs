@@ -2,13 +2,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
+using Unity.Netcode;
 
 public enum GameState
 {
     MAIN_MENU,
     SETUP,
-    SET_BOUNDARIES,
+    // SET_BOUNDARIES,
     PLACE_FORTRESS,
     PLACE_CORE_BLOCK,
     PLAYING,
@@ -31,16 +31,11 @@ public enum CurrentPlayer
     PLAYER_2 = 2
 }
 
-public enum CoreLoopMode
-{
-    FIRE_BLOCK,
-    MOVE_BLOCK
-}
 
 public enum WinCondition { HitFloor, LeaveBoundary, Both }
 
 
-public class GameManager : MonoBehaviour
+public class GameManager : NetworkBehaviour
 {
     // singleton
     public static GameManager Instance;
@@ -50,62 +45,28 @@ public class GameManager : MonoBehaviour
     [SerializeField] private PlayingState playingState;
     [SerializeField] private CurrentPlayer _currentPlayer;
     [SerializeField] private WinCondition winCondition;
-    [SerializeField] private CoreLoopMode _coreLoopMode;
 
     public static event Action<GameState> OnGameStateChanged;
     public static event Action<PlayingState> OnPlayingStateChanged;
     public static event Action<CurrentPlayer> OnCurrentPlayerChanged;
-    public static event Action<CoreLoopMode> OnCoreLoopModeChanged;
 
-    // 
-    [SerializeField] private GameObject gameStateCube;
-    private Renderer cubeRenderer;
-
-    public TMP_Text currentGameStateText;
     
     // awake should contain self setup stuff
     private void Awake()
     {
         Instance = this;
         currentPlayer = CurrentPlayer.PLAYER_1;
-        SetGameState(GameState.MAIN_MENU);
+        SetGameState(GameState.SETUP);
         SetPlayingState(PlayingState.START_TURN);
     }
 
     private void Start()
     {
         // set to main menu
-        gameStateCube = GameObject.Find("GameStateCube");
-        if (gameStateCube != null)
-        {
-            cubeRenderer = gameStateCube.GetComponent<Renderer>();
-        }
+
     }
 
-    //private void Update() {}
 
-    private void UpdateGameState()
-    {
-        if (cubeRenderer != null)
-        {
-            switch(gameState)
-            {
-                case GameState.MAIN_MENU:
-                    cubeRenderer.material.color = Color.white;
-                    break;
-                case GameState.PLAYING:
-                    //Call SetColor using the shader property name "_Color" and setting the color to red
-                    if(currentPlayer is CurrentPlayer.PLAYER_1)
-                        cubeRenderer.material.color = Color.yellow;
-                    else
-                        cubeRenderer.material.color = Color.blue;
-                    break;
-                case GameState.GAME_OVER:
-                    cubeRenderer.material.color = Color.red;
-                    break;
-            }
-        }
-    }
 
     private void UpdatePlayingState()
     {
@@ -127,8 +88,6 @@ public class GameManager : MonoBehaviour
     public void SetGameState(GameState newState)
     {
         gameState = newState;
-        UpdateGameState();
-        currentGameStateText.text = GetGameState().ToString();
 
         // has anybody subscribed to this event? if so broadcast event
         OnGameStateChanged?.Invoke(newState);
@@ -184,26 +143,12 @@ public class GameManager : MonoBehaviour
     {
         SetPlayingState(PlayingState.START_TURN);
         //currentPlayer = (currentPlayer == CurrentPlayer.PLAYER_1) ? CurrentPlayer.PLAYER_2 : CurrentPlayer.PLAYER_1;
-        //SetCurrentPlayer((CurrentPlayer.PLAYER_1 & CurrentPlayer.PLAYER_2) ^ currentPlayer);
     }
 
-    public CoreLoopMode coreLoopMode
-    {
-        get { return _coreLoopMode; }
-        set {
-            _coreLoopMode = value;
-            OnCoreLoopModeChanged?.Invoke(value);
-        }
-    }
 
-    public void SetCoreLoopFire()
-    {
-        _coreLoopMode = CoreLoopMode.FIRE_BLOCK;
-    }
-    public void SetCoreLoopMove()
-    {
-        _coreLoopMode = CoreLoopMode.MOVE_BLOCK;
-    }
+
+
+
 
 
 }

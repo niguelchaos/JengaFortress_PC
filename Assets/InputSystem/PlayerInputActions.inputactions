@@ -11,7 +11,8 @@
                     "id": "8cbd0431-5c63-4b2d-807c-7ae8644969a4",
                     "expectedControlType": "Vector2",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Look",
@@ -19,7 +20,8 @@
                     "id": "7ce42982-2204-4cc1-916d-aaadd05c2162",
                     "expectedControlType": "Vector2",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Sprint",
@@ -27,7 +29,8 @@
                     "id": "700b19b9-b2e8-4d27-899d-92709493647e",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Jump",
@@ -35,7 +38,8 @@
                     "id": "c97cf156-4853-41c0-9f86-a798cec6cbfe",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Fire",
@@ -43,7 +47,8 @@
                     "id": "37dde00d-dfaf-4727-9dc6-5ac0ffbe1a5a",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Reload",
@@ -51,7 +56,8 @@
                     "id": "861c729c-2b1b-4206-9580-6cfea348c0b3",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Crouch",
@@ -59,7 +65,8 @@
                     "id": "33cafc52-d0c3-4067-ad62-981489ca25ca",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Attack",
@@ -67,7 +74,17 @@
                     "id": "432d1b57-9216-489a-a894-50b921d2d86f",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "EndTurnDebug",
+                    "type": "Button",
+                    "id": "92c3887c-52d2-4d44-9720-d91323c018df",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -277,6 +294,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1ef1f3c4-73a7-438a-84fa-31a643cf5593",
+                    "path": "<Keyboard>/o",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "EndTurnDebug",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

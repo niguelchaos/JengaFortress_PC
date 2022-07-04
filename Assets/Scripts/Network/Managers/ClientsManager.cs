@@ -5,7 +5,7 @@ using Unity.Netcode;
 
 public class ClientsManager : NetworkBehaviour
 {
-    public static ClientsManager Instance;
+    private static ClientsManager Instance;
     private NetworkVariable<int> playersInGame;
 
 

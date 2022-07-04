@@ -17,8 +17,11 @@ public class InputManager : MonoBehaviour
     private InputAction fireAction;
     private InputAction reloadAction;
     private InputAction attackAction;
+    
+    // Debug
+    private InputAction endTurnAction;
 
-    // public static Action fireActionEvent;
+
 
     [SerializeField] public Vector2 moveDir { get; private set; }
     [SerializeField] public Vector2 lookInput { get; private set; }
@@ -28,6 +31,10 @@ public class InputManager : MonoBehaviour
     [SerializeField] public bool fireInput { get; private set; }
     [SerializeField] public bool reloadInput { get; private set; }
     [SerializeField] public bool attackInput { get; private set; }
+
+    // debug
+    [SerializeField] public bool endTurnInput { get; private set; }
+
 
     private void OnEnable()
     {
@@ -44,6 +51,9 @@ public class InputManager : MonoBehaviour
         if (fireAction != null) fireAction.Disable();
         if (reloadAction != null) reloadAction.Disable();
         if (attackAction != null) attackAction.Disable();
+
+        // Debug
+        if (endTurnAction != null) endTurnAction.Disable();
     }
 
     private void Awake()
@@ -74,6 +84,9 @@ public class InputManager : MonoBehaviour
             reloadAction = playerInput.actions["Reload"];
             attackAction = playerInput.actions["Attack"];
 
+            // debug
+            endTurnAction = playerInput.actions["EndTurnDebug"];
+
 
             moveAction.Enable();
             lookAction.Enable();
@@ -83,6 +96,9 @@ public class InputManager : MonoBehaviour
             fireAction.Enable();
             reloadAction.Enable();
             attackAction.Enable();
+
+            // debug
+            endTurnAction.Enable();
 
             print("PlayerInput Connected");
 
@@ -120,6 +136,10 @@ public class InputManager : MonoBehaviour
         
         attackAction.performed += OnAttackInput;
         attackAction.canceled += OnAttackInput;
+
+        // Debug
+        endTurnAction.performed += OnEndTurnInput;
+        endTurnAction.canceled += OnEndTurnInput;
     }
 
     public void OnMoveInput(InputAction.CallbackContext context)
@@ -162,6 +182,13 @@ public class InputManager : MonoBehaviour
         this.attackInput = context.performed;
     }
 
+
+    // debug
+    public void OnEndTurnInput(InputAction.CallbackContext context)
+    {  
+        this.endTurnInput = context.performed;
+    }
+
     private void OnDestroy()
     {
         if (playerInput == null) { return; }
@@ -192,6 +219,11 @@ public class InputManager : MonoBehaviour
             
             attackAction.performed -= OnAttackInput;
             attackAction.canceled -= OnAttackInput;
+
+            
+            // Debug
+            endTurnAction.performed -= OnEndTurnInput;
+            endTurnAction.canceled -= OnEndTurnInput;
         }
 
     }

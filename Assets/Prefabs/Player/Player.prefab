@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6022134393055662710}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -174,6 +174,22 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: ad65666127d1b0244a5295d11dc90cae, type: 2}
+    - target: {fileID: 1704106533432326535, guid: a28d3afccc06cf14d9c6acdc5dddc962, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 1704106533712321417, guid: a28d3afccc06cf14d9c6acdc5dddc962, type: 3}
+      propertyPath: m_ActionEvents.Array.size
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1704106533712321417, guid: a28d3afccc06cf14d9c6acdc5dddc962, type: 3}
+      propertyPath: m_ActionEvents.Array.data[8].m_ActionId
+      value: 92c3887c-52d2-4d44-9720-d91323c018df
+      objectReference: {fileID: 0}
+    - target: {fileID: 1704106533712321417, guid: a28d3afccc06cf14d9c6acdc5dddc962, type: 3}
+      propertyPath: m_ActionEvents.Array.data[8].m_ActionName
+      value: Player/EndTurnDebug[/Keyboard/o]
+      objectReference: {fileID: 0}
     - target: {fileID: 1704106533712321417, guid: a28d3afccc06cf14d9c6acdc5dddc962, type: 3}
       propertyPath: m_ActionEvents.Array.data[4].m_PersistentCalls.m_Calls.Array.size
       value: 1
