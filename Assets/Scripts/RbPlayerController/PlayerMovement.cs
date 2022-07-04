@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class RbPlayerMovement : PlayerClient
+public class PlayerMovement : PlayerClient
 {
     private enum State { Idle, Walk, Sprint, Crouch}
     [SerializeField] private State state = State.Idle;

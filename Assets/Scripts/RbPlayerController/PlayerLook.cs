@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RbPlayerLook : PlayerClient
+public class PlayerLook : PlayerClient
 {
     private enum State { Idle, Wallrunning, StoppingWallrun}
     [SerializeField] private State state = State.Idle;

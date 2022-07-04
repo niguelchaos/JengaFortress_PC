@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class RbPlayerController : PlayerClient
+public class PlayerController : PlayerClient
 {   
     [Header("GroundDetection")]
     private LayerMask groundMask;

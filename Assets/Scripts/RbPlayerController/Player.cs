@@ -27,6 +27,7 @@ public class Player : NetworkBehaviour
     [SerializeField] public bool isGrounded;
     [SerializeField] public bool hasJumped;
     [SerializeField] public bool isOnSlope;
+    [SerializeField] public bool isFlying;
 
     [Header("Crouch")]
     public float startYScale;
@@ -83,10 +84,10 @@ public class Player : NetworkBehaviour
     {
         playerInput.DeactivateInput();
         playerInput.enabled = false;
-        GetComponent<GunFightFSM>().enabled = false;
-        GetComponent<GunstickFSM>().enabled = false;
-        GetComponent<PlayerCrouchFSM>().enabled = false;
-        GetComponent<RbPlayerMovement>().enabled = false;
+        GetComponent<PlayerGunFight>().enabled = false;
+        GetComponent<PlayerGunstick>().enabled = false;
+        GetComponent<PlayerCrouch>().enabled = false;
+        GetComponent<PlayerMovement>().enabled = false;
     }
 
 

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WeaponSwitch : PlayerClient
+public class PlayerWeaponSwitch : PlayerClient
 {
    // private enum State { One, Two }
    // [SerializeField] private State state = State.One;
@@ -21,22 +21,12 @@ public class WeaponSwitch : PlayerClient
    {
       SetWeapons();
       Select(selectedWeapon);
-      // Player.notNetworkOwnerEvent += OnNotNetworkOwner;
+      timeSinceLastSwitch = 0f;
    }
 
-   // private void OnNotNetworkOwner(ulong id)
-   // {
-   //    Destroy(this);
-   // }
-
-   // void OnDestroy()
-   // {
-   //    Player.notNetworkOwnerEvent -= OnNotNetworkOwner;
-   // }
 
    private void Update()
    {
-
 
    }
 
@@ -49,6 +39,14 @@ public class WeaponSwitch : PlayerClient
       for (int i = 0; i < transform.childCount; i++)
       {
          weapons[i] = transform.GetChild(i);
+      }
+
+      // dynamically set buttons
+      // if (keys == null) keys = new KeyCode[weapons.Length];
+      if (weapons.Length > 1)
+      {
+         print("adding weapons " + weapons.Length);
+         InputManager.Instance.AddWeaponNumberBindings(weapons.Length);
       }
    }
 
@@ -71,13 +69,17 @@ public class WeaponSwitch : PlayerClient
 
    private void ChangeWeapon()
    {
-      int prevSelectedWeapon = selectedWeapon;
 
-      if (timeSinceLastSwitch >= switchTime)
-      {
-         if (selectedWeapon == 0) { selectedWeapon = 1; }
-         else { selectedWeapon = 0; }
-      }
+      // if (InputManager.Instance.weaponSwapInput != selectedWeapon)
+      // {
+         int prevSelectedWeapon = selectedWeapon;
+
+         if (timeSinceLastSwitch >= switchTime)
+         {
+            Select(selectedWeapon);
+         }
+         timeSinceLastSwitch += Time.deltaTime;
+      // }
    }
 
 }

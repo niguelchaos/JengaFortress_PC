@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerCrouchFSM : PlayerClient
+public class PlayerCrouch : PlayerClient
 {
    private enum State { Idle, Crouching}
    [SerializeField] private State state = State.Idle;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerJumpFSM : PlayerClient
+public class PlayerJump : PlayerClient
 {
    private enum State { Idle, Jumping, Walljump}
    [SerializeField] private State state = State.Idle;
@@ -17,16 +17,6 @@ public class PlayerJumpFSM : PlayerClient
    {
       // Player.notNetworkOwnerEvent += OnNotNetworkOwner;
    }
-
-   // private void OnNotNetworkOwner()
-   // {
-   //    Destroy(this);
-   // }
-
-   // void OnDestroy()
-   // {
-   //    Player.notNetworkOwnerEvent -= OnNotNetworkOwner;
-   // }
 
    private void Update()
    {

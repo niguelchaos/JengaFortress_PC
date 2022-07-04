@@ -5,28 +5,13 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 // player handling the gun fighting
-public class GunFightFSM : PlayerClient
+public class PlayerGunFight : PlayerClient
 {
    private enum State { Idle, Windup, Slash}
    [SerializeField] private State state = State.Idle;
 
    public static Action windupActionEvent;
    public static Action slashActionEvent;
-
-   // private void Start()
-   // {
-   //    Player.notNetworkOwnerEvent += OnNotNetworkOwner;
-   // }
-
-   // private void OnNotNetworkOwner()
-   // {
-   //    Destroy(this);
-   // }
-
-   // void OnDestroy()
-   // {
-   //    Player.notNetworkOwnerEvent -= OnNotNetworkOwner;
-   // }
 
    private void Update()
    {

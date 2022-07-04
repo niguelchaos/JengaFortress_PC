@@ -20,7 +20,7 @@ public class Gun : NetworkBehaviour
     [SerializeField] private GameObject projectile;    // this is a reference to your projectile prefab
     [SerializeField] private float fireBlockForce = 10000;
 
-    public static Action propelActionEvent;
+    public static Action<GameObject> propelActionEvent;
     
     private bool subEventsOnStart = true;
 
@@ -39,8 +39,8 @@ public class Gun : NetworkBehaviour
 
         if (subEventsOnStart)
         {
-            GunstickFSM.fireActionEvent += Shoot;
-            GunstickFSM.reloadActionEvent += StartReload;
+            PlayerGunstick.fireActionEvent += Shoot;
+            PlayerGunstick.reloadActionEvent += StartReload;
         }
 
 
@@ -133,7 +133,7 @@ public class Gun : NetworkBehaviour
         // request server: i just pressed button, spawn projectile from location
         RequestGunshotServerRpc(muzzle.transform.position, fireBlockForce);
 
-        propelActionEvent?.Invoke();
+        propelActionEvent?.Invoke(muzzle);
     }
 
     private void FireProjectile(Vector3 dir, float fireForce)
@@ -178,8 +178,8 @@ public class Gun : NetworkBehaviour
 
     public void UnsubEvents()
     {
-        GunstickFSM.fireActionEvent -= Shoot;
-        GunstickFSM.reloadActionEvent -= StartReload;
+        PlayerGunstick.fireActionEvent -= Shoot;
+        PlayerGunstick.reloadActionEvent -= StartReload;
         subEventsOnStart = false;
     }
 

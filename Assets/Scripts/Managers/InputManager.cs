@@ -17,6 +17,7 @@ public class InputManager : MonoBehaviour
     private InputAction fireAction;
     private InputAction reloadAction;
     private InputAction attackAction;
+    private List<InputAction> weaponSwapActions = new List<InputAction>();
     
     // Debug
     private InputAction endTurnAction;
@@ -31,6 +32,7 @@ public class InputManager : MonoBehaviour
     [SerializeField] public bool fireInput { get; private set; }
     [SerializeField] public bool reloadInput { get; private set; }
     [SerializeField] public bool attackInput { get; private set; }
+    // [SerializeField] public bool weaponSwap1Input { get; private set; }
 
     // debug
     [SerializeField] public bool endTurnInput { get; private set; }
@@ -51,6 +53,10 @@ public class InputManager : MonoBehaviour
         if (fireAction != null) fireAction.Disable();
         if (reloadAction != null) reloadAction.Disable();
         if (attackAction != null) attackAction.Disable();
+        if (weaponSwapActions != null) {
+            foreach (InputAction weaponAction in weaponSwapActions)
+            { weaponAction.Disable(); }   
+        }
 
         // Debug
         if (endTurnAction != null) endTurnAction.Disable();
@@ -83,6 +89,7 @@ public class InputManager : MonoBehaviour
             fireAction = playerInput.actions["Fire"];
             reloadAction = playerInput.actions["Reload"];
             attackAction = playerInput.actions["Attack"];
+            // weaponSwap1Action = playerInput.actions["WeaponSwap1"];
 
             // debug
             endTurnAction = playerInput.actions["EndTurnDebug"];
@@ -96,6 +103,10 @@ public class InputManager : MonoBehaviour
             fireAction.Enable();
             reloadAction.Enable();
             attackAction.Enable();
+            // if (weaponSwapActions.Length > 0) {
+            //     foreach (InputAction weaponAction in weaponSwapActions)
+            //     { weaponAction.Enable(); }   
+            // }
 
             // debug
             endTurnAction.Enable();
@@ -136,6 +147,14 @@ public class InputManager : MonoBehaviour
         
         attackAction.performed += OnAttackInput;
         attackAction.canceled += OnAttackInput;
+
+        // if (weaponSwapActions.Length > 0) {
+        //     foreach (InputAction weaponAction in weaponSwapActions)
+        //     { 
+        //         attackAction.performed += OnAttackInput;
+        //         attackAction.canceled += OnAttackInput;
+        //     }   
+        // }
 
         // Debug
         endTurnAction.performed += OnEndTurnInput;
@@ -181,6 +200,22 @@ public class InputManager : MonoBehaviour
     {  
         this.attackInput = context.performed;
     }
+    public void OnWeaponSwapInput(InputAction.CallbackContext context)
+    {  
+        Debug.Log(context);
+    }
+
+    public void AddWeaponNumberBindings(int weaponNum)
+    {
+        for (int i = 0; i < weaponNum; i++)
+        {
+            InputAction newWeaponSwapAction = new InputAction(name: "WeaponSwap" + (i+1), binding:"<Keyboard>/" + (i+1));
+            weaponSwapActions.Add(newWeaponSwapAction);
+            newWeaponSwapAction.Enable();
+            newWeaponSwapAction.performed += OnWeaponSwapInput;
+            print("added " + i);
+        }
+    }
 
 
     // debug
@@ -219,6 +254,9 @@ public class InputManager : MonoBehaviour
             
             attackAction.performed -= OnAttackInput;
             attackAction.canceled -= OnAttackInput;
+
+            // weaponSwapAction.performed -= OnWeaponSwapInput;
+            // weaponSwapAction.canceled -= OnWeaponSwapInput;
 
             
             // Debug

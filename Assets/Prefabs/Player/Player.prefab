@@ -71,6 +71,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 9115065147115007802}
     m_Modifications:
+    - target: {fileID: 1403776683725909184, guid: 4e042e9b07d4e92429943386d9d24934, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2615576579840269885, guid: 4e042e9b07d4e92429943386d9d24934, type: 3}
+      propertyPath: m_Name
+      value: ExplosiveGun
+      objectReference: {fileID: 0}
+    - target: {fileID: 2615576579840269885, guid: 4e042e9b07d4e92429943386d9d24934, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4118501482312926946, guid: 4e042e9b07d4e92429943386d9d24934, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4232379527893817680, guid: 4e042e9b07d4e92429943386d9d24934, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -127,13 +143,42 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6441639415340953923, guid: 4e042e9b07d4e92429943386d9d24934, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8298413766185928163, guid: 4e042e9b07d4e92429943386d9d24934, type: 3}
+      propertyPath: muzzle
+      value: 
+      objectReference: {fileID: 3049936420803002663}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4e042e9b07d4e92429943386d9d24934, type: 3}
---- !u!1 &5477458986324460323 stripped
+--- !u!1 &3049936420803002663 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 2777979619853928556, guid: 4e042e9b07d4e92429943386d9d24934, type: 3}
+  m_CorrespondingSourceObject: {fileID: 4673900029943106152, guid: 4e042e9b07d4e92429943386d9d24934, type: 3}
   m_PrefabInstance: {fileID: 7678226506703637327}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &5145510818344530926 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3307344722096683169, guid: 4e042e9b07d4e92429943386d9d24934, type: 3}
+  m_PrefabInstance: {fileID: 7678226506703637327}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7959115035008433549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5145510818344530926}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8c96acb13037644ea96d0bdbfa3ce1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weapons: []
+  switchTime: 0
+  timeSinceLastSwitch: 0
+  selectedWeapon: 0
 --- !u!20 &5778932587715105309 stripped
 Camera:
   m_CorrespondingSourceObject: {fileID: 4232379527893817682, guid: 4e042e9b07d4e92429943386d9d24934, type: 3}
@@ -144,25 +189,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4232379528515756763, guid: 4e042e9b07d4e92429943386d9d24934, type: 3}
   m_PrefabInstance: {fileID: 7678226506703637327}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &5778932589244852631 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4232379528515756760, guid: 4e042e9b07d4e92429943386d9d24934, type: 3}
-  m_PrefabInstance: {fileID: 7678226506703637327}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &4339152189035678070
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5778932589244852631}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e838ad7dd4877c74c82a76d5a243c67d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _cheapInterpolationTime: 0.1
-  usingServerAuth: 0
 --- !u!1001 &7678226506713809651
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -390,14 +416,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: -1.033
       objectReference: {fileID: 0}
-    - target: {fileID: 6614099526907159597, guid: a28d3afccc06cf14d9c6acdc5dddc962, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8056098228764978958, guid: a28d3afccc06cf14d9c6acdc5dddc962, type: 3}
       propertyPath: muzzle
       value: 
-      objectReference: {fileID: 5477458986324460323}
+      objectReference: {fileID: 3049936420803002663}
     - target: {fileID: 9124178666699362865, guid: a28d3afccc06cf14d9c6acdc5dddc962, type: 3}
       propertyPath: cam
       value: 

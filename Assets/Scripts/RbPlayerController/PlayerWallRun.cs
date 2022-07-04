@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class RbWallRun : PlayerClient
+public class PlayerWallRun : PlayerClient
 {
     private enum State { Idle, Wallrunning, Stopping}
     [SerializeField] private State state = State.Idle;

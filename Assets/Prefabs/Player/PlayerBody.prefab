@@ -121,6 +121,7 @@ GameObject:
   - component: {fileID: 8154514619484896997}
   - component: {fileID: 8056098228764978958}
   - component: {fileID: 3896645134786389034}
+  - component: {fileID: 6742676181014923673}
   m_Layer: 0
   m_Name: PlayerBody
   m_TagString: Player
@@ -170,7 +171,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1704106533712321423}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: df2868252ab5c4d1da357e8f11f1b524, type: 3}
   m_Name: 
@@ -294,6 +295,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 432d1b57-9216-489a-a894-50b921d2d86f
     m_ActionName: Player/Attack[/Mouse/leftButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 92c3887c-52d2-4d44-9720-d91323c018df
+    m_ActionName: Player/EndTurnDebug[/Keyboard/o]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -315,6 +320,7 @@ MonoBehaviour:
   isGrounded: 0
   hasJumped: 0
   isOnSlope: 0
+  isFlying: 0
   startYScale: 0
   isWallRunning: 0
   isWallLeft: 0
@@ -470,7 +476,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   propelForce: 150
-  muzzle: {fileID: 0}
 --- !u!114 &3896645134786389034
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -483,6 +488,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e838ad7dd4877c74c82a76d5a243c67d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _cheapInterpolationTime: 0.1
+  usingServerAuth: 0
+--- !u!114 &6742676181014923673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1704106533712321423}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d1c32d29eac96e47909763aeb990020, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  state: 1
 --- !u!1 &1704106534078235678
 GameObject:
   m_ObjectHideFlags: 0

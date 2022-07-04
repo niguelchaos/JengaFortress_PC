@@ -23,8 +23,8 @@ public class GunAnimController : NetworkBehaviour
    { 
       if (subEventsOnStart)
       {
-         GunFightFSM.windupActionEvent += Windup;
-         GunFightFSM.slashActionEvent += Slash;
+         PlayerGunFight.windupActionEvent += Windup;
+         PlayerGunFight.slashActionEvent += Slash;
          print("anim subbed");
       }
    }
@@ -69,8 +69,8 @@ public class GunAnimController : NetworkBehaviour
    public void UnsubEvents()
    {
       subEventsOnStart = false;
-      GunFightFSM.windupActionEvent -= Windup;
-      GunFightFSM.slashActionEvent -= Slash;
+      PlayerGunFight.windupActionEvent -= Windup;
+      PlayerGunFight.slashActionEvent -= Slash;
       print("anim unsubbed");
    }
 

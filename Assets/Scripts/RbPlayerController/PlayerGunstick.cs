@@ -5,13 +5,12 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 // player handling the gun firing mechanism
-public class GunstickFSM : PlayerClient
+public class PlayerGunstick : PlayerClient
 {
    private enum State { Idle, Fire, Reloading}
    [SerializeField] private State state = State.Idle;
 
    [SerializeField] private float propelForce = 150f;
-   [SerializeField] private GameObject muzzle;
 
    public static Action fireActionEvent;
    public static Action reloadActionEvent;
@@ -19,18 +18,7 @@ public class GunstickFSM : PlayerClient
    private void Start()
    { 
       Gun.propelActionEvent += Propel;
-      // Player.notNetworkOwnerEvent += OnNotNetworkOwner;
    }
-
-   // private void OnNotNetworkOwner()
-   // {
-   //    Destroy(this);
-   // }
-
-   // void OnDestroy()
-   // {
-   //    Player.notNetworkOwnerEvent -= OnNotNetworkOwner;
-   // }
 
    private void Update()
    {
@@ -96,13 +84,13 @@ public class GunstickFSM : PlayerClient
       Player.hasFired = true;
    }
 
-   private void Propel()
+   private void Propel(GameObject muzzle)
    {
-      Vector3 propelDir = GetDistance();
+      Vector3 propelDir = GetDistance(muzzle);
       Player.rb.AddRelativeForce(propelDir * propelForce, ForceMode.Impulse);
    }
 
-   private Vector3 GetDistance()
+   private Vector3 GetDistance(GameObject muzzle)
    {
       Vector3 playerPos = Player.transform.position;
       Vector3 dir = (this.transform.position - muzzle.transform.position).normalized;

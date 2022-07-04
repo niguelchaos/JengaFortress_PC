@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerGravityFSM : PlayerClient
+public class PlayerGravity : PlayerClient
 {
-   private enum State { Normal, Wallrun }
+   private enum State { Normal, Wallrun, Fly }
    [SerializeField] private State state = State.Normal;
 
    [SerializeField] private float wallRunGravity = 2f;
@@ -35,6 +35,9 @@ public class PlayerGravityFSM : PlayerClient
          case State.Wallrun:
             state = UpdateState();
             break;
+         case State.Fly:
+            state = UpdateState();
+            break;
       }
       
    }
@@ -49,6 +52,10 @@ public class PlayerGravityFSM : PlayerClient
       if (Player.isWallRunning)
       {
          return State.Wallrun;
+      }
+      else if (Player.isFlying)
+      {
+         return State.Fly;
       }
       else {
          return State.Normal;
@@ -67,6 +74,9 @@ public class PlayerGravityFSM : PlayerClient
          case State.Wallrun:
             Player.rb.useGravity = false;
             Player.rb.AddForce(Vector3.down * wallRunGravity, ForceMode.Force);
+            break;
+         case State.Fly:
+            Player.rb.useGravity = false;
             break;
       }
    }
