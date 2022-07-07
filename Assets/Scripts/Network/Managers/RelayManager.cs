@@ -110,4 +110,35 @@ public class RelayManager : NetworkBehaviour
         var dtlsEndpoint = allocation.ServerEndpoints.First(e => e.ConnectionType == "dtls");
         return (dtlsEndpoint.Host, (ushort)dtlsEndpoint.Port, allocation.AllocationIdBytes, allocation.ConnectionData, allocation.Key, createJoinCode);
     }
+
+    /// <summary>
+    /// RelayHostData represents the necessary information
+    /// for a Host to host a game on a Relay
+    /// </summary>
+    public struct RelayHostData
+    {
+        public string JoinCode;
+        public string IPv4Address;
+        public ushort Port;
+        public Guid AllocationID;
+        public byte[] AllocationIDBytes;
+        public byte[] ConnectionData;
+        public byte[] Key;
+    }
+    
+    /// <summary>
+    /// RelayHostData represents the necessary information
+    /// for a Host to host a game on a Relay
+    /// </summary>
+    public struct RelayJoinData
+    {
+        public string JoinCode;
+        public string IPv4Address;
+        public ushort Port;
+        public Guid AllocationID;
+        public byte[] AllocationIDBytes;
+        public byte[] ConnectionData;
+        public byte[] HostConnectionData;
+        public byte[] Key;
+    }
 }
