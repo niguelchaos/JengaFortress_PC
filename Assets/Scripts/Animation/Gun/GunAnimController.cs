@@ -80,6 +80,7 @@ public class GunAnimController : NetworkBehaviour
       // server then calls client to execute
       WindupClientRpc();
    }
+   
    [ServerRpc]
    private void RequestSlashServerRpc()
    {

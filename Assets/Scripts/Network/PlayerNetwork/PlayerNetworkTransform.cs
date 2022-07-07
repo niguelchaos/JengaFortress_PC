@@ -37,7 +37,8 @@ public class PlayerNetworkTransform : NetworkBehaviour
     private void TransmitState() {
         var state = new PlayerNetworkState {
             Position = transform.position,
-            Rotation = transform.rotation.eulerAngles
+            Rotation = transform.rotation.eulerAngles,
+            Scale = transform.localScale
         };
 
         // if script not set to using server as authority
@@ -68,6 +69,7 @@ public class PlayerNetworkTransform : NetworkBehaviour
     {
         private float _xPos, _yPos, _zPos;
         private short _xRot, _yRot, _zRot;
+        private float _yScl;
 
         internal Vector3 Position
         {
@@ -89,6 +91,15 @@ public class PlayerNetworkTransform : NetworkBehaviour
             }
         }
 
+        internal Vector3 Scale 
+        {
+            get => new Vector3(1, _yScl, 1);
+            set {
+                _yScl = value.y;
+            }
+        }
+
+
         public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T: IReaderWriter
         {
             serializer.SerializeValue(ref _xPos);
@@ -98,6 +109,8 @@ public class PlayerNetworkTransform : NetworkBehaviour
             serializer.SerializeValue(ref _xRot);
             serializer.SerializeValue(ref _yRot);
             serializer.SerializeValue(ref _zRot);
+            
+            serializer.SerializeValue(ref _yScl);
         }
     }
 
@@ -116,7 +129,11 @@ public class PlayerNetworkTransform : NetworkBehaviour
             Mathf.SmoothDampAngle(transform.rotation.eulerAngles.y, _playerState.Value.Rotation.y, ref _rotVelY, _cheapInterpolationTime),
             Mathf.SmoothDampAngle(transform.rotation.eulerAngles.z, _playerState.Value.Rotation.z, ref _rotVelZ, _cheapInterpolationTime)
         );
+        print("Local Scale: " + transform.localScale.y);
+        print("playerstate Scale: " + _playerState.Value.Scale.y);
+        transform.localScale = _playerState.Value.Scale;
+
     }
 
-        #endregion
+    #endregion
 }

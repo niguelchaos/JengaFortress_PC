@@ -42,7 +42,7 @@ public class PlayerNetworkManager : NetworkBehaviour
             }
             else { print("shiet"); }
             
-            GameObject gunStick = this.transform.Find("CameraHolder/WeaponHolder/Gun/GunStick").gameObject;
+            GameObject gunStick = this.transform.Find("CameraHolder/WeaponHolder/ExplosiveGun/GunStick").gameObject;
             if (gunStick != null)
             {
                 gunStick.GetComponent<Gun>().UnsubEvents();

@@ -11,17 +11,37 @@ using Unity.Services.Relay;
 using Unity.Services.Relay.Models;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
-
+using UnityEngine.Events;
 
 
 
 public class LobbyManager : MonoBehaviour
 {
+    public static LobbyManager Instance;
 
     private string _lobbyId;
 
     private RelayManager.RelayHostData _hostData;
     private RelayManager.RelayJoinData _joinData;
+
+    // Setup events
+    
+    // Notify state update
+    public UnityAction<string> LobbyUpdateStateEvent;
+    // Notify Match found
+    public UnityAction MatchFoundEvent;
+    public UnityAction MatchHostedEvent;
+
+    private void Awake()
+    {
+        if (Instance is null)
+        {
+            Instance = this;
+            return;
+        }
+
+        Destroy(this);
+    }
 
     async void Start()
     {
@@ -35,8 +55,24 @@ public class LobbyManager : MonoBehaviour
         // After logging in, can use services
         await SignInAnonymouslyAsync();
 
+        // Subscribe to NetworkManager events
+        NetworkManager.Singleton.OnClientConnectedCallback += ClientConnected;
 
     }
+
+    #region Network events
+
+    private void ClientConnected(ulong id)
+    {
+        // Player with id connected to our session
+        
+        Debug.Log("Connected player with id: " + id);
+        
+        LobbyUpdateStateEvent?.Invoke("Player found!");
+        MatchFoundEvent?.Invoke();
+    }
+
+    #endregion
 
     #region UnityLogin
 
@@ -80,7 +116,7 @@ public class LobbyManager : MonoBehaviour
     {
         Debug.Log("Looking for a lobby...");
 
-        // UpdateState?.Invoke("Looking for a match...");
+        LobbyUpdateStateEvent?.Invoke("Looking for a match...");
         
         try
         {
@@ -126,9 +162,9 @@ public class LobbyManager : MonoBehaviour
             // Finally start the client
             NetworkManager.Singleton.StartClient();
             
-            // // Trigger events
-            // UpdateState?.Invoke("Match found!");
-            // MatchFound?.Invoke();
+            // Trigger events
+            LobbyUpdateStateEvent?.Invoke("Match found!");
+            MatchFoundEvent?.Invoke();
         }
         catch (LobbyServiceException e)
         {
@@ -142,7 +178,7 @@ public class LobbyManager : MonoBehaviour
     {
          Debug.Log("Creating a new lobby...");
         
-        // UpdateState?.Invoke("Creating a new match...");
+        LobbyUpdateStateEvent?.Invoke("Creating a new match...");
         
         // External connections
         int maxConnections = 1;
@@ -191,7 +227,7 @@ public class LobbyManager : MonoBehaviour
             // Heartbeat the lobby every 15 seconds.
             StartCoroutine(HeartbeatLobbyCoroutine(lobby.Id, 15));
             
-            // // Now that RELAY and LOBBY are set...
+            // Now that RELAY and LOBBY are set...
             
             // Set Transports data
             NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(
@@ -203,8 +239,9 @@ public class LobbyManager : MonoBehaviour
                 
             // Finally start host
             NetworkManager.Singleton.StartHost();
+            MatchHostedEvent?.Invoke();
             
-            // UpdateState?.Invoke("Waiting for players...");
+            LobbyUpdateStateEvent?.Invoke("Waiting for players...");
         }
         catch (LobbyServiceException e)
         {

@@ -8,14 +8,19 @@ public class DebugUI : MonoBehaviour
 {
     public TMP_Text currentGameStateText;
     public TMP_Text currentPlayerText;
+    public TMP_Text lobbyStateText;
 
     [SerializeField] private GameObject gameStateCube;
     private Renderer cubeRenderer;
+
+    [SerializeField] private GameObject menuCanvas; 
 
     private void Start()
     {
         GameManager.OnGameStateChanged += OnGameStateChanged;
         GameManager.OnPlayingStateChanged += OnPlayingStateChanged;
+        LobbyManager.Instance.LobbyUpdateStateEvent += OnLobbyUpdateState;
+        // LobbyManager.Instance.MatchHostedEvent += OnMatchFound;
 
         gameStateCube = GameObject.Find("GameStateCube");
         if (gameStateCube != null)
@@ -42,6 +47,12 @@ public class DebugUI : MonoBehaviour
         }
     }
 
+    private void OnLobbyUpdateState(string newState)
+    {
+        lobbyStateText.text = "";
+        lobbyStateText.text = newState;
+    }
+
     private void UpdateGameStateUI(GameState newGameState)
     {
         if (cubeRenderer != null)
@@ -63,5 +74,12 @@ public class DebugUI : MonoBehaviour
                     break;
             }
         }
+    }
+
+    private void OnDestroy()
+    {
+        GameManager.OnGameStateChanged -= OnGameStateChanged;
+        GameManager.OnPlayingStateChanged -= OnPlayingStateChanged;
+        LobbyManager.Instance.LobbyUpdateStateEvent -= OnLobbyUpdateState;
     }
 }
