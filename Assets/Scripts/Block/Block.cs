@@ -1,16 +1,36 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
+using Unity.Netcode.Components;
 
-public class Block : MonoBehaviour
+public class Block : NetworkBehaviour
 {
     public Rigidbody rb {get; private set;}
+    private NetworkRigidbody netRb;
+    private NetworkObject netObj;
     [SerializeField] private float magnitude;
     [SerializeField] private float changeCDMLim = 250;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        netRb = GetComponent<NetworkRigidbody>();
+        netObj = GetComponent<NetworkObject>();
+    }
+
+    private void Start()
+    {
+        LobbyManager.Instance.MatchFoundEvent += OnMatchFound;
+    }
+
+    private void OnMatchFound()
+    {
+        // if (IsClient)
+        // {
+        //     Destroy(rb);
+        //     print("Destroying rb");
+        // }
     }
 
     protected virtual void FixedUpdate()
@@ -29,5 +49,11 @@ public class Block : MonoBehaviour
         }
         // default
         rb.collisionDetectionMode = CollisionDetectionMode.Discrete;
+    }
+
+    public override void OnDestroy()
+    {
+        base.OnDestroy();
+        LobbyManager.Instance.MatchFoundEvent -= OnMatchFound;
     }
 }

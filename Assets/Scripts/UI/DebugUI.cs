@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Unity.Netcode;
+using Unity.Netcode.Transports.UTP;
 
 public class DebugUI : MonoBehaviour
 {
@@ -47,10 +49,10 @@ public class DebugUI : MonoBehaviour
         }
     }
 
-    private void OnLobbyUpdateState(string newState)
+    private void OnLobbyUpdateState(LobbyManager.LobbyUpdateState newState)
     {
         lobbyStateText.text = "";
-        lobbyStateText.text = newState;
+        lobbyStateText.text = newState.ToString();
     }
 
     private void UpdateGameStateUI(GameState newGameState)
@@ -74,6 +76,17 @@ public class DebugUI : MonoBehaviour
                     break;
             }
         }
+    }
+
+    private void OnGUI() {
+        GUILayout.BeginArea(new Rect(10, 10, 300, 300));
+        if (!NetworkManager.Singleton.IsClient && !NetworkManager.Singleton.IsServer) {
+            if (GUILayout.Button("Local Host")) NetworkManager.Singleton.StartHost();
+            if (GUILayout.Button("Local Server")) NetworkManager.Singleton.StartServer();
+            if (GUILayout.Button("Local Client")) NetworkManager.Singleton.StartClient();
+        }
+
+        GUILayout.EndArea();
     }
 
     private void OnDestroy()

@@ -21,7 +21,7 @@ public enum PlayingState
     START_TURN,
     IDLE,
     AIMING, // also includes charging up a throw
-    THROWING, 
+    // THROWING, 
     END_TURN
 }
 
@@ -49,6 +49,7 @@ public class GameManager : NetworkBehaviour
     public static event Action<GameState> OnGameStateChanged;
     public static event Action<PlayingState> OnPlayingStateChanged;
     public static event Action<CurrentPlayer> OnCurrentPlayerChanged;
+    
 
     
     // awake should contain self setup stuff
@@ -63,7 +64,17 @@ public class GameManager : NetworkBehaviour
     private void Start()
     {
         // set to main menu
+        LobbyManager.Instance.MatchHostedEvent += OnMatchHosted;
+    }
 
+    private void OnMatchHosted()
+    {
+        SetGameState(GameState.SETUP);
+    }
+
+    private void OnGameStarted()
+    {
+        SetGameState(GameState.PLACE_FORTRESS);
     }
 
 
@@ -77,10 +88,6 @@ public class GameManager : NetworkBehaviour
                                     ? CurrentPlayer.PLAYER_2
                                     : CurrentPlayer.PLAYER_1;
                 break;
-            /*case PlayingState.THROWING | PlayingState.AIMING:
-                break;
-            case PlayingState.END_TURN:
-                break;*/
         }
     }
 

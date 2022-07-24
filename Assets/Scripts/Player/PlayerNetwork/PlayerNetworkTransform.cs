@@ -129,8 +129,8 @@ public class PlayerNetworkTransform : NetworkBehaviour
             Mathf.SmoothDampAngle(transform.rotation.eulerAngles.y, _playerState.Value.Rotation.y, ref _rotVelY, _cheapInterpolationTime),
             Mathf.SmoothDampAngle(transform.rotation.eulerAngles.z, _playerState.Value.Rotation.z, ref _rotVelZ, _cheapInterpolationTime)
         );
-        print("Local Scale: " + transform.localScale.y);
-        print("playerstate Scale: " + _playerState.Value.Scale.y);
+        // print("Local Scale: " + transform.localScale.y);
+        // print("playerstate Scale: " + _playerState.Value.Scale.y);
         transform.localScale = _playerState.Value.Scale;
 
     }

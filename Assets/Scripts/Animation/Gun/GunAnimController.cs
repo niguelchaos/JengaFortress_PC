@@ -9,7 +9,7 @@ using Unity.Netcode;
 public class GunAnimController : NetworkBehaviour
 {
    private enum State { Idle, PointBack, Fire, Reloading}
-   [SerializeField] private State state = State.Idle;
+   // [SerializeField] private State state = State.Idle;
 
    private Animator animator;
    private bool subEventsOnStart = true;
