@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: 4826dc34c2ae20d479bd9c282ab87a1e, type: 2}
   m_LightingSettings: {fileID: 0}
 --- !u!196 &4
 NavMeshSettings:
@@ -6187,7 +6187,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 1036455179
+  GlobalObjectIdHash: 2123683637
   AlwaysReplicateAsRoot: 0
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
@@ -6219,11 +6219,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8075460298177302717, guid: d3a45768c5ff19d4eac29df4c0c0231d, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 1457315715
-      objectReference: {fileID: 0}
-    - target: {fileID: 971656636827933253, guid: d3a45768c5ff19d4eac29df4c0c0231d, type: 3}
-      propertyPath: _currentPlayer
-      value: 1
+      value: 2206235699
       objectReference: {fileID: 0}
     - target: {fileID: 971656636827933253, guid: d3a45768c5ff19d4eac29df4c0c0231d, type: 3}
       propertyPath: currentGameStateText
@@ -23627,7 +23623,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2039124690
+  GlobalObjectIdHash: 4283293608
   AlwaysReplicateAsRoot: 0
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
@@ -23832,16 +23828,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5850424479253210631, guid: ca70e08879d592b46be350f38c1bce19, type: 3}
-      propertyPath: LogLevel
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5850424479253210631, guid: ca70e08879d592b46be350f38c1bce19, type: 3}
       propertyPath: NetworkConfig.TickRate
       value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 5850424479253210631, guid: ca70e08879d592b46be350f38c1bce19, type: 3}
-      propertyPath: NetworkConfig.PlayerPrefab
-      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ca70e08879d592b46be350f38c1bce19, type: 3}

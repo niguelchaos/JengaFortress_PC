@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
+using UnityEngine;
 
 #if UNITY_EDITOR
 using ParrelSync;
@@ -29,6 +30,8 @@ public static class AuthService {
         if (!AuthenticationService.Instance.IsSignedIn) 
         {
             await AuthenticationService.Instance.SignInAnonymouslyAsync();
+            Debug.Log("Sign in anonymously succeeded!");
+
             PlayerId = AuthenticationService.Instance.PlayerId;
         }
     }

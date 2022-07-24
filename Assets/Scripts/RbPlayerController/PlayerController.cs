@@ -16,22 +16,12 @@ public class PlayerController : PlayerClient
         FindPlayerHeight();
         this.groundMask = LayerMask.GetMask(EditorConstants.LAYER_GROUND, EditorConstants.LAYER_BLOCK);
         Player.rb.freezeRotation = true;
-        // Player.notNetworkOwnerEvent += OnNotNetworkOwner;
     }
-
-    // private void OnNotNetworkOwner()
-    // {
-    //     Destroy(this);
-    // }
-
-    // void OnDestroy()
-    // {
-    //     Player.notNetworkOwnerEvent -= OnNotNetworkOwner;
-    // }
 
     private void Update()
     {
         CheckIsGrounded();
+        CheckIsFalling();
     }
 
     private void FixedUpdate()
@@ -44,6 +34,17 @@ public class PlayerController : PlayerClient
         // isGrounded = Physics.Raycast(transform.position, Vector3.down, raycastLength);
         // bottom of player
         Player.isGrounded = Physics.CheckSphere(groundCheck.position, groundDist, groundMask);
+    }
+
+    private void CheckIsFalling()
+    {
+        if (!Player.isGrounded && Player.rb.velocity.y < 0.1f)
+        {
+            Player.isFalling = true;
+        }
+        else {
+            Player.isFalling = false;
+        }
     }
 
     private void FindPlayerHeight()

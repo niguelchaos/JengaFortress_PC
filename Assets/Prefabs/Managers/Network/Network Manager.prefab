@@ -51,8 +51,33 @@ MonoBehaviour:
     ProtocolVersion: 0
     NetworkTransport: {fileID: 5850424479253210630}
     PlayerPrefab: {fileID: 6178094774645610529, guid: 79ede780c96c93b449ad07701aef0c56, type: 3}
-    NetworkPrefabs: []
-    TickRate: 30
+    NetworkPrefabs:
+    - Override: 0
+      Prefab: {fileID: 7478470662186750750, guid: 302fdb4fb8ce1414c85216a3916543ce, type: 3}
+      SourcePrefabToOverride: {fileID: 0}
+      SourceHashToOverride: 0
+      OverridingTargetPrefab: {fileID: 0}
+    - Override: 0
+      Prefab: {fileID: 7641956167998171903, guid: 6c3d7fb76f3e8ba429773d7e929b740d, type: 3}
+      SourcePrefabToOverride: {fileID: 0}
+      SourceHashToOverride: 0
+      OverridingTargetPrefab: {fileID: 0}
+    - Override: 0
+      Prefab: {fileID: 1052213973701882678, guid: f6bb3709162e36e498f7bb8a52ba6fc4, type: 3}
+      SourcePrefabToOverride: {fileID: 0}
+      SourceHashToOverride: 0
+      OverridingTargetPrefab: {fileID: 0}
+    - Override: 0
+      Prefab: {fileID: 5410185231743097155, guid: b2bb17700b98a324fbd64413e2dae0e1, type: 3}
+      SourcePrefabToOverride: {fileID: 0}
+      SourceHashToOverride: 0
+      OverridingTargetPrefab: {fileID: 0}
+    - Override: 0
+      Prefab: {fileID: 1600650154855296071, guid: 8f11666a08d76754592ceadd45da4a21, type: 3}
+      SourcePrefabToOverride: {fileID: 0}
+      SourceHashToOverride: 0
+      OverridingTargetPrefab: {fileID: 0}
+    TickRate: 10
     ClientConnectionBufferTimeout: 10
     ConnectionApproval: 0
     ConnectionData: 
@@ -81,8 +106,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_ProtocolType: 0
   m_MaxPacketQueueSize: 128
-  m_MaxPayloadSize: 6144
-  m_MaxSendQueueSize: 98304
+  m_MaxPayloadSize: 562500
+  m_MaxSendQueueSize: 9000000
   m_HeartbeatTimeoutMS: 500
   m_ConnectTimeoutMS: 1000
   m_MaxConnectAttempts: 60
@@ -92,6 +117,6 @@ MonoBehaviour:
     Port: 7777
     ServerListenAddress: 
   DebugSimulator:
-    PacketDelayMS: 0
-    PacketJitterMS: 0
-    PacketDropRate: 0
+    PacketDelayMS: 10
+    PacketJitterMS: 3
+    PacketDropRate: 5

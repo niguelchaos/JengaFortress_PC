@@ -12,6 +12,8 @@ using Unity.Services.Relay.Models;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
+
 
 #if UNITY_EDITOR
 using ParrelSync;
@@ -19,7 +21,7 @@ using ParrelSync;
 
 public class QuickJoinLobbyManager : NetworkBehaviour
 {
-    private static QuickJoinLobbyManager Instance;
+    public static QuickJoinLobbyManager Instance;
 
     private Lobby connectedLobby;
     private UnityTransport transport; 
@@ -29,6 +31,8 @@ public class QuickJoinLobbyManager : NetworkBehaviour
     [SerializeField] private int maxConnections = 4;
     [SerializeField] private string joinCodeKey = "joinCode";
     private int lobbyHeartbeatFrequency = 15;
+
+    public event Action GameStarted;
 
     private void Awake()
     {
@@ -88,7 +92,17 @@ public class QuickJoinLobbyManager : NetworkBehaviour
 
     public async void CreateOrJoinLobby()
     {
-        await Authenticate();
+        // await Authenticate();
+        
+        // first try quick join, then if no work create lobby
+        connectedLobby = await QuickJoinLobby() ?? await CreateLobby();
+        if (connectedLobby != null) {}
+    }
+
+    public async void CreateOrJoinLobbyTest()
+    {
+        // await Authenticate();
+        await AuthService.Login();
         
         // first try quick join, then if no work create lobby
         connectedLobby = await QuickJoinLobby() ?? await CreateLobby();
@@ -158,7 +172,8 @@ public class QuickJoinLobbyManager : NetworkBehaviour
 
             // Trigger events
             LobbyManager.Instance.LobbyUpdateStateEvent?.Invoke(LobbyManager.LobbyUpdateState.FOUND_LOBBY);
-            LobbyManager.Instance.MatchFoundEvent?.Invoke();
+            GameStarted?.Invoke();
+            // LobbyManager.Instance.MatchFoundEvent?.Invoke();
             
             return lobby;
         }
@@ -221,7 +236,8 @@ public class QuickJoinLobbyManager : NetworkBehaviour
             // Finally start host
             NetworkManager.Singleton.StartHost();
             
-            LobbyManager.Instance.MatchHostedEvent?.Invoke();
+            // LobbyManager.Instance.MatchHostedEvent?.Invoke();
+            GameStarted?.Invoke();
             LobbyManager.Instance.LobbyUpdateStateEvent?.Invoke(LobbyManager.LobbyUpdateState.WAITING_FOR_PLAYERS);
 
             return lobby;
@@ -276,8 +292,10 @@ public class QuickJoinLobbyManager : NetworkBehaviour
     #endregion
     
 
-    private void OnDestroy()
+    public override void OnDestroy()
     {
+        base.OnDestroy();
+        
         try
         {
             StopAllCoroutines();

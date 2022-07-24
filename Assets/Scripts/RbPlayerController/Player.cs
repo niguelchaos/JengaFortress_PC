@@ -28,6 +28,7 @@ public class Player : NetworkBehaviour
     [SerializeField] public bool hasJumped;
     [SerializeField] public bool isOnSlope;
     [SerializeField] public bool isFlying;
+    [SerializeField] public bool isFalling;
 
     [Header("Crouch")]
     public float startYScale;

@@ -4,42 +4,22 @@ using UnityEngine;
 
 public class PlayerGravity : PlayerClient
 {
-   private enum State { Normal, Wallrun, Fly }
+   private enum State { Normal, Wallrun, Fly, InAir }
    [SerializeField] private State state = State.Normal;
 
    [SerializeField] private float wallRunGravity = 2f;
    [SerializeField] private float defaultGravityScale = 5;
+
+   [SerializeField] private float currentAirGravity = 5f;
+   [SerializeField] private float inAirGravMultiplier = 1.1f;
    
    private void Start()
    {
-      // Player.notNetworkOwnerEvent += OnNotNetworkOwner;
    }
-
-   // private void OnNotNetworkOwner()
-   // {
-   //    Destroy(this);
-   // }
-
-   // void OnDestroy()
-   // {
-   //    Player.notNetworkOwnerEvent -= OnNotNetworkOwner;
-   // }
     
    private void Update()
    {
-      switch(state)
-      {
-         case State.Normal:
-            state = UpdateState();
-            break;
-         case State.Wallrun:
-            state = UpdateState();
-            break;
-         case State.Fly:
-            state = UpdateState();
-            break;
-      }
-      
+      state = UpdateState();
    }
 
    private void FixedUpdate()
@@ -57,6 +37,10 @@ public class PlayerGravity : PlayerClient
       {
          return State.Fly;
       }
+      else if (Player.isFalling)
+      {
+         return State.InAir;
+      }
       else {
          return State.Normal;
       }
@@ -69,16 +53,29 @@ public class PlayerGravity : PlayerClient
       {
          case State.Normal:
             Player.rb.useGravity = true;
+            ResetInAirGravity();
             Player.rb.AddForce(Physics.gravity * defaultGravityScale, ForceMode.Acceleration);
             break;
          case State.Wallrun:
             Player.rb.useGravity = false;
+            ResetInAirGravity();
             Player.rb.AddForce(Vector3.down * wallRunGravity, ForceMode.Force);
             break;
          case State.Fly:
+            ResetInAirGravity();
             Player.rb.useGravity = false;
             break;
+         case State.InAir:
+            Player.rb.useGravity = true;
+            currentAirGravity = currentAirGravity + (inAirGravMultiplier * Time.deltaTime);
+            Player.rb.AddForce(Physics.gravity * currentAirGravity, ForceMode.Acceleration);
+            break;
       }
+   }
+
+   private void ResetInAirGravity()
+   {
+      currentAirGravity = defaultGravityScale;
    }
 
 }

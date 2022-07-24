@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &971656636827933259
+--- !u!1 &2247357464645864083
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,24 +8,24 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 971656636827933258}
-  - component: {fileID: 971656636827933253}
-  - component: {fileID: -8075460298177302717}
+  - component: {fileID: 2247357464645864084}
+  - component: {fileID: 2247357464645864085}
+  - component: {fileID: 3363882682813479067}
   m_Layer: 0
-  m_Name: GameManager
+  m_Name: QuickJoinManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &971656636827933258
+--- !u!4 &2247357464645864084
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 971656636827933259}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_GameObject: {fileID: 2247357464645864083}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -33,30 +33,27 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &971656636827933253
+--- !u!114 &2247357464645864085
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 971656636827933259}
+  m_GameObject: {fileID: 2247357464645864083}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dcccd566f6270be43aa65f100961b533, type: 3}
+  m_Script: {fileID: 11500000, guid: bd96675f162a6884baa27a30a26c8f06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameState: 0
-  playingState: 0
-  _currentPlayer: 1
-  winCondition: 1
-  _playerPrefab: {fileID: 6178094774645610529, guid: 79ede780c96c93b449ad07701aef0c56, type: 3}
---- !u!114 &-8075460298177302717
+  maxConnections: 4
+  joinCodeKey: joinCode
+--- !u!114 &3363882682813479067
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 971656636827933259}
+  m_GameObject: {fileID: 2247357464645864083}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}

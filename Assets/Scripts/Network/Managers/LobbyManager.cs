@@ -12,6 +12,8 @@ using Unity.Services.Relay.Models;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
+
 
 #if UNITY_EDITOR
 using ParrelSync;
@@ -28,8 +30,8 @@ public class LobbyManager : NetworkBehaviour
     }
     
     // Notify Match found
-    public UnityAction MatchFoundEvent;
-    public UnityAction MatchHostedEvent;
+    public event Action MatchFoundEvent;
+    public event Action MatchHostedEvent;
     
 
     private void Awake()
@@ -47,6 +49,7 @@ public class LobbyManager : NetworkBehaviour
     {
         // Subscribe to NetworkManager events
         NetworkManager.Singleton.OnClientConnectedCallback += ClientConnected;
+        QuickJoinLobbyManager.Instance.GameStarted += OnGameStart;
 
     }
 
@@ -195,7 +198,12 @@ public class LobbyManager : NetworkBehaviour
     private async void OnGameStart() {
         // using (new Load("Starting the game...")) {
             await MatchmakingService.LockLobby();
-            // NetworkManager.Singleton.SceneManager.LoadScene("Game", LoadSceneMode.Single);
+            print("Locking Lobby, starting game");
+
+            if (SceneManager.GetActiveScene().name == "Lobby")
+            {
+                NetworkManager.Singleton.SceneManager.LoadScene("Scenes/GameTest", LoadSceneMode.Single);
+            }
         // }
     }
     
@@ -208,7 +216,7 @@ public class LobbyManager : NetworkBehaviour
         // CreateLobbyScreen.LobbyCreated -= CreateLobby;
         // LobbyRoomPanel.LobbySelected -= OnLobbySelected;
         // RoomScreen.LobbyLeft -= OnLobbyLeft;
-        // RoomScreen.StartPressed -= OnGameStart;
+        QuickJoinLobbyManager.Instance.GameStarted -= OnGameStart;
 
         
         // We only care about this during lobby

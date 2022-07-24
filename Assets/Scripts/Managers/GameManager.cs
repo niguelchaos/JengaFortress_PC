@@ -49,6 +49,8 @@ public class GameManager : NetworkBehaviour
     public static event Action<GameState> OnGameStateChanged;
     public static event Action<PlayingState> OnPlayingStateChanged;
     public static event Action<CurrentPlayer> OnCurrentPlayerChanged;
+
+    [SerializeField] private GameObject _playerPrefab;
     
 
     
@@ -66,6 +68,28 @@ public class GameManager : NetworkBehaviour
         // set to main menu
         LobbyManager.Instance.MatchHostedEvent += OnMatchHosted;
     }
+
+    public override void OnNetworkSpawn() {
+        SpawnPlayerServerRpc(NetworkManager.Singleton.LocalClientId);
+    }   
+
+    [ServerRpc(RequireOwnership = false)]
+    private void SpawnPlayerServerRpc(ulong playerId) {
+        var spawn = Instantiate(_playerPrefab);
+        print("Spawning...");
+        spawn.GetComponent<NetworkObject>().SpawnWithOwnership(playerId);
+    }
+
+    public override void OnDestroy() {
+        base.OnDestroy();
+        MatchmakingService.LeaveLobby();
+        if(NetworkManager.Singleton != null )NetworkManager.Singleton.Shutdown();
+    }
+
+    
+
+    
+
 
     private void OnMatchHosted()
     {
