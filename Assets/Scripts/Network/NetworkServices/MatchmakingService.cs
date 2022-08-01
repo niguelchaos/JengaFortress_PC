@@ -12,14 +12,6 @@ using UnityEngine;
 
 using Object = UnityEngine.Object;
 
-
-public struct LobbyData {
-    public string Name;
-    public int MaxPlayers;
-    public int Difficulty;
-    public int Type;
-}
-
 public static class MatchmakingService {
     private const int HeartbeatInterval = 15;
     private const int LobbyRefreshRate = 2; // Rate limits at 2
@@ -70,15 +62,17 @@ public static class MatchmakingService {
         CreateLobbyOptions options = new CreateLobbyOptions {
             Data = new Dictionary<string, DataObject> 
             {
-                { LobbyConstants.JoinKey, new DataObject(DataObject.VisibilityOptions.Member, joinCode) },
-                // { Constants.GameTypeKey, new DataObject(DataObject.VisibilityOptions.Public, data.Type.ToString(), DataObject.IndexOptions.N1) }, {
-                //     Constants.DifficultyKey,
+                { LobbyConstants.JoinKey, new DataObject(DataObject.VisibilityOptions.Member, joinCode) }
+                // { LobbyConstants.GameTypeKey, new DataObject(DataObject.VisibilityOptions.Public, data.Type.ToString(), DataObject.IndexOptions.N1) }, 
+                // {
+                //     LobbyConstants.DifficultyKey,
                 //     new DataObject(DataObject.VisibilityOptions.Public, data.Difficulty.ToString(), DataObject.IndexOptions.N2)
                 // }
             }
         };
 
         _currentLobby = await Lobbies.Instance.CreateLobbyAsync(data.Name, data.MaxPlayers, options);
+        Debug.Log("Created Joincode: " + _currentLobby.Data[LobbyConstants.JoinKey].Value);
 
         Transport.SetHostRelayData(a.RelayServer.IpV4, (ushort)a.RelayServer.Port, a.AllocationIdBytes, a.Key, a.ConnectionData);
 
@@ -88,12 +82,45 @@ public static class MatchmakingService {
 
 
     public static async Task JoinLobbyWithAllocation(string lobbyId) {
-        _currentLobby = await Lobbies.Instance.JoinLobbyByIdAsync(lobbyId);
+        _currentLobby = await LobbyService.Instance.JoinLobbyByIdAsync(lobbyId);
+        var a = await RelayService.Instance.JoinAllocationAsync(_currentLobby.Data[LobbyConstants.JoinKey].Value);
+        Debug.Log("Joincode: " + _currentLobby.Data[LobbyConstants.JoinKey].Value);
+
+
+        Transport.SetClientRelayData(a.RelayServer.IpV4, (ushort)a.RelayServer.Port, a.AllocationIdBytes, a.Key, a.ConnectionData, a.HostConnectionData);
+
+        PeriodicallyRefreshLobby();
+    }
+
+    public static async Task JoinLobby(Lobby lobby) {
+        _currentLobby = lobby;
+        Debug.Log("Current Lobby: " + _currentLobby.Id);
+
         var a = await RelayService.Instance.JoinAllocationAsync(_currentLobby.Data[LobbyConstants.JoinKey].Value);
 
         Transport.SetClientRelayData(a.RelayServer.IpV4, (ushort)a.RelayServer.Port, a.AllocationIdBytes, a.Key, a.ConnectionData, a.HostConnectionData);
 
         PeriodicallyRefreshLobby();
+    }
+
+    public static async Task QuickJoinLobby()
+    {
+        // Add options to the matchmaking (mode, rank, etc..)
+        QuickJoinLobbyOptions options = new QuickJoinLobbyOptions();
+        // Quick-join a random lobby
+        Lobby lobby = await LobbyService.Instance.QuickJoinLobbyAsync(options);
+        
+        string joinCode = lobby.Data[LobbyConstants.JoinKey].Value;
+        Debug.Log("Joincode: " + joinCode);
+
+        await JoinLobby(lobby);
+        Debug.Log("Quick Joining Lobby");
+    }
+
+    public static async Task QuickCreateLobby()
+    {
+        await CreateLobbyWithAllocation(LobbyConstants.DefaultLobbyData);
+        Debug.Log("Quick Lobby Created");
     }
 
     public static async Task LockLobby() {

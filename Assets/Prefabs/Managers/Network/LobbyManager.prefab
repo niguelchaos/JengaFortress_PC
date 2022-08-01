@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6545950360640799646}
   - component: {fileID: 6545950360640799645}
   - component: {fileID: 5578938881170114356}
+  - component: {fileID: 278571350132691954}
   m_Layer: 0
   m_Name: LobbyManager
   m_TagString: Untagged
@@ -61,3 +62,17 @@ MonoBehaviour:
   AlwaysReplicateAsRoot: 0
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
+--- !u!114 &278571350132691954
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6545950360640799647}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd96675f162a6884baa27a30a26c8f06, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxConnections: 4
+  joinCodeKey: joinCode

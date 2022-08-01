@@ -426,7 +426,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4819828548957372858, guid: a28d3afccc06cf14d9c6acdc5dddc962, type: 3}
       propertyPath: inAirGravMultiplier
-      value: 5
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 6614099526907159597, guid: a28d3afccc06cf14d9c6acdc5dddc962, type: 3}
       propertyPath: SyncScaleY

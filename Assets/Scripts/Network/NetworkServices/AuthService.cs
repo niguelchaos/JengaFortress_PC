@@ -33,6 +33,7 @@ public static class AuthService {
             Debug.Log("Sign in anonymously succeeded!");
 
             PlayerId = AuthenticationService.Instance.PlayerId;
+            Debug.Log(PlayerId);
         }
     }
 }

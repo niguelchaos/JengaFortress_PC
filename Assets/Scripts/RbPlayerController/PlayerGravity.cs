@@ -68,7 +68,7 @@ public class PlayerGravity : PlayerClient
          case State.InAir:
             Player.rb.useGravity = true;
             currentAirGravity = currentAirGravity + (inAirGravMultiplier * Time.deltaTime);
-            Player.rb.AddForce(Physics.gravity * currentAirGravity, ForceMode.Acceleration);
+            Player.rb.AddForce(Physics.gravity *  currentAirGravity, ForceMode.Acceleration);
             break;
       }
    }

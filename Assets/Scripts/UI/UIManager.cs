@@ -11,8 +11,7 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
-        LobbyManager.Instance.MatchFoundEvent += OnMatchFound;
-        LobbyManager.Instance.MatchHostedEvent += OnMatchFound;
+        LobbyManager.LobbyEntered += OnMatchFound;
 
         if (menuCanvas == null)
         {
@@ -27,8 +26,7 @@ public class UIManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        LobbyManager.Instance.MatchFoundEvent -= OnMatchFound;
-        LobbyManager.Instance.MatchHostedEvent -= OnMatchFound;
+        LobbyManager.LobbyEntered -= OnMatchFound;
     }
 
 }

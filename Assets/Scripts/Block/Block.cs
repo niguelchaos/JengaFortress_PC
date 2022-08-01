@@ -21,17 +21,8 @@ public class Block : NetworkBehaviour
 
     private void Start()
     {
-        LobbyManager.Instance.MatchFoundEvent += OnMatchFound;
     }
 
-    private void OnMatchFound()
-    {
-        // if (IsClient)
-        // {
-        //     Destroy(rb);
-        //     print("Destroying rb");
-        // }
-    }
 
     protected virtual void FixedUpdate()
     {
@@ -54,6 +45,5 @@ public class Block : NetworkBehaviour
     public override void OnDestroy()
     {
         base.OnDestroy();
-        LobbyManager.Instance.MatchFoundEvent -= OnMatchFound;
     }
 }

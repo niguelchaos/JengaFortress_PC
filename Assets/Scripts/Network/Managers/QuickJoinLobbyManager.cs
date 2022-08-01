@@ -32,7 +32,6 @@ public class QuickJoinLobbyManager : NetworkBehaviour
     [SerializeField] private string joinCodeKey = "joinCode";
     private int lobbyHeartbeatFrequency = 15;
 
-    public event Action GameStarted;
 
     private void Awake()
     {
@@ -144,7 +143,7 @@ public class QuickJoinLobbyManager : NetworkBehaviour
     {
         // Looking for a lobby - search for open lobbies (Quick Matchmaking)
         Debug.Log("Looking for a lobby...");
-        LobbyManager.Instance.LobbyUpdateStateEvent?.Invoke(LobbyManager.LobbyUpdateState.FINDING_LOBBY);
+        LobbyManager.LobbyUpdateStateEvent?.Invoke(LobbyManager.LobbyUpdateState.FINDING_LOBBY);
 
         try
         {    
@@ -171,8 +170,8 @@ public class QuickJoinLobbyManager : NetworkBehaviour
             NetworkManager.Singleton.StartClient();
 
             // Trigger events
-            LobbyManager.Instance.LobbyUpdateStateEvent?.Invoke(LobbyManager.LobbyUpdateState.FOUND_LOBBY);
-            GameStarted?.Invoke();
+            LobbyManager.LobbyUpdateStateEvent?.Invoke(LobbyManager.LobbyUpdateState.FOUND_LOBBY);
+            // GameStarted?.Invoke();
             // LobbyManager.Instance.MatchFoundEvent?.Invoke();
             
             return lobby;
@@ -189,7 +188,7 @@ public class QuickJoinLobbyManager : NetworkBehaviour
     private async Task<Lobby> CreateLobby()
     {
         Debug.Log("Creating a new lobby...");
-        LobbyManager.Instance.LobbyUpdateStateEvent?.Invoke(LobbyManager.LobbyUpdateState.CREATING_LOBBY);
+        LobbyManager.LobbyUpdateStateEvent?.Invoke(LobbyManager.LobbyUpdateState.CREATING_LOBBY);
                 
         try
         {
@@ -237,8 +236,8 @@ public class QuickJoinLobbyManager : NetworkBehaviour
             NetworkManager.Singleton.StartHost();
             
             // LobbyManager.Instance.MatchHostedEvent?.Invoke();
-            GameStarted?.Invoke();
-            LobbyManager.Instance.LobbyUpdateStateEvent?.Invoke(LobbyManager.LobbyUpdateState.WAITING_FOR_PLAYERS);
+            // GameStarted?.Invoke();
+            LobbyManager.LobbyUpdateStateEvent?.Invoke(LobbyManager.LobbyUpdateState.WAITING_FOR_PLAYERS);
 
             return lobby;
         }

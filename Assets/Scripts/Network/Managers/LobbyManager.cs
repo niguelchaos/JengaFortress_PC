@@ -10,47 +10,47 @@ using Unity.Services.Lobbies.Models;
 using Unity.Services.Relay;
 using Unity.Services.Relay.Models;
 using Unity.Netcode;
-using Unity.Netcode.Transports.UTP;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
-
-#if UNITY_EDITOR
-using ParrelSync;
-#endif
-
 public class LobbyManager : NetworkBehaviour
 {
-    public static LobbyManager Instance;
+    // public static LobbyManager Instance;
+    [SerializeField] private MainLobbyScreen _mainLobbyScreen;
+    [SerializeField] private CreateLobbyScreen _createScreen;
+    [SerializeField] private RoomScreen _roomScreen;
     
     // Notify state update
-    public UnityAction<LobbyUpdateState> LobbyUpdateStateEvent;
+    public static UnityAction<LobbyUpdateState> LobbyUpdateStateEvent;
     public enum LobbyUpdateState {
         FINDING_LOBBY, FOUND_LOBBY, CREATING_LOBBY, WAITING_FOR_PLAYERS, FOUND_PLAYER
     }
     
     // Notify Match found
-    public event Action MatchFoundEvent;
-    public event Action MatchHostedEvent;
+    public static event Action LobbyEntered;
+
     
 
     private void Awake()
     {
-        if (Instance is null)
-        {
-            Instance = this;
-            return;
-        }
+        // if (Instance is null)
+        // {
+        //     Instance = this;
+        //     return;
+        // }
 
-        Destroy(this);
+        // Destroy(this);
     }
 
     private void Start()
     {
         // Subscribe to NetworkManager events
         NetworkManager.Singleton.OnClientConnectedCallback += ClientConnected;
-        QuickJoinLobbyManager.Instance.GameStarted += OnGameStart;
 
+        CreateLobbyScreen.LobbyCreated += CreateLobby;
+        LobbyRoomPanel.LobbySelected += OnLobbySelected;
+        RoomScreen.LobbyLeft += OnLobbyLeft;
+        RoomScreen.StartPressed += OnGameStart;
     }
 
     #region Enter Lobby
@@ -58,16 +58,17 @@ public class LobbyManager : NetworkBehaviour
     private async void OnLobbySelected(Lobby lobby) {
         // using (new Load("Joining Lobby...")) {
             try {
+                print("Joining Lobby");
                 await MatchmakingService.JoinLobbyWithAllocation(lobby.Id);
 
-                // _mainLobbyScreen.gameObject.SetActive(false);
-                // _roomScreen.gameObject.SetActive(true);
+                _mainLobbyScreen.gameObject.SetActive(false);
+                _roomScreen.gameObject.SetActive(true);
 
                 NetworkManager.Singleton.StartClient();
                 
                 // Trigger events
+                LobbyEntered?.Invoke();
                 LobbyUpdateStateEvent?.Invoke(LobbyUpdateState.FOUND_LOBBY);
-                MatchFoundEvent?.Invoke();
             }
             catch (Exception e) {
                 Debug.LogError(e);
@@ -85,14 +86,15 @@ public class LobbyManager : NetworkBehaviour
             try {
                 await MatchmakingService.CreateLobbyWithAllocation(data);
 
-                // _createScreen.gameObject.SetActive(false);
-                // _roomScreen.gameObject.SetActive(true);
+                _mainLobbyScreen.gameObject.SetActive(false);
+                _createScreen.gameObject.SetActive(false);
+                _roomScreen.gameObject.SetActive(true);
 
                 // Starting the host immediately will keep the relay server alive
                 NetworkManager.Singleton.StartHost();
 
                 // Trigger events
-                MatchHostedEvent?.Invoke();
+                LobbyEntered?.Invoke();
                 LobbyUpdateStateEvent?.Invoke(LobbyUpdateState.WAITING_FOR_PLAYERS);
             }
             catch (Exception e) {
@@ -100,6 +102,42 @@ public class LobbyManager : NetworkBehaviour
                 // CanvasUtilities.Instance.ShowError("Failed creating lobby");
             }
         // }
+    }
+
+    #endregion
+
+    #region Quick Join
+
+    public async void QuickJoinLobby()
+    {
+        // Looking for a lobby - search for open lobbies (Quick Matchmaking)
+        Debug.Log("Looking for a lobby...");
+        LobbyManager.LobbyUpdateStateEvent?.Invoke(LobbyManager.LobbyUpdateState.FINDING_LOBBY);
+
+        try
+        {    
+            await MatchmakingService.QuickJoinLobby();
+
+            _mainLobbyScreen.gameObject.SetActive(false);
+            _roomScreen.gameObject.SetActive(true);
+
+            NetworkManager.Singleton.StartClient();
+            
+            // Trigger events
+            LobbyUpdateStateEvent?.Invoke(LobbyUpdateState.FOUND_LOBBY);
+            LobbyEntered?.Invoke();
+        }
+        catch (LobbyServiceException e)
+        {
+            // If we don't find any lobby, let's create a new one
+            Debug.Log("Cannot find a lobby for Quick Join: " + e);
+            
+            _mainLobbyScreen.gameObject.SetActive(false);
+            _createScreen.gameObject.SetActive(true);
+            // _roomScreen.gameObject.SetActive(true);
+            // CreateLobby(LobbyConstants.DefaultLobbyData);
+            // Debug.Log("Quick Lobby Created");
+        }
     }
 
     #endregion
@@ -140,10 +178,13 @@ public class LobbyManager : NetworkBehaviour
 
     [ClientRpc]
     private void UpdatePlayerClientRpc(ulong clientId, bool isReady) {
-        if (IsServer) return;
+        if (IsServer || IsHost) return;
+        
 
         if (!_playersInLobby.ContainsKey(clientId)) _playersInLobby.Add(clientId, isReady);
         else _playersInLobby[clientId] = isReady;
+
+        // print(_playersInLobby[clientId] + " is " + isReady);
         UpdateInterface();
     }
 
@@ -159,27 +200,33 @@ public class LobbyManager : NetworkBehaviour
         }
         else {
             // This happens when the host disconnects the lobby
-            // _roomScreen.gameObject.SetActive(false);
-            // _mainLobbyScreen.gameObject.SetActive(true);
+            _roomScreen.gameObject.SetActive(false);
+            _mainLobbyScreen.gameObject.SetActive(true);
             OnLobbyLeft();
         }
     }
 
     [ClientRpc]
     private void RemovePlayerClientRpc(ulong clientId) {
-        if (IsServer) return;
+        if (IsServer || IsHost) {
+            return;
+        }
 
         if (_playersInLobby.ContainsKey(clientId)) _playersInLobby.Remove(clientId);
         UpdateInterface();
     }
 
     public void OnReadyClicked() {
+        // print("Sending player " + NetworkManager.Singleton.LocalClientId);
         SetReadyServerRpc(NetworkManager.Singleton.LocalClientId);
     }
 
     [ServerRpc(RequireOwnership = false)]
     private void SetReadyServerRpc(ulong playerId) {
-        _playersInLobby[playerId] = true;
+        
+        _playersInLobby[playerId] = !_playersInLobby[playerId];
+        // print("Serverrpc > player " + playerId + "  is ready: " + _playersInLobby[playerId]);
+
         PropagateToClients();
         UpdateInterface();
     }
@@ -202,7 +249,7 @@ public class LobbyManager : NetworkBehaviour
 
             if (SceneManager.GetActiveScene().name == "Lobby")
             {
-                NetworkManager.Singleton.SceneManager.LoadScene("Scenes/GameTest", LoadSceneMode.Single);
+                // NetworkManager.Singleton.SceneManager.LoadScene("Scenes/GameTest", LoadSceneMode.Single);
             }
         // }
     }
@@ -213,11 +260,9 @@ public class LobbyManager : NetworkBehaviour
 
         StopAllCoroutines();
 
-        // CreateLobbyScreen.LobbyCreated -= CreateLobby;
-        // LobbyRoomPanel.LobbySelected -= OnLobbySelected;
-        // RoomScreen.LobbyLeft -= OnLobbyLeft;
-        QuickJoinLobbyManager.Instance.GameStarted -= OnGameStart;
-
+        CreateLobbyScreen.LobbyCreated -= CreateLobby;
+        LobbyRoomPanel.LobbySelected -= OnLobbySelected;
+        RoomScreen.LobbyLeft -= OnLobbyLeft;
         
         // We only care about this during lobby
         if (NetworkManager.Singleton != null) {
@@ -238,7 +283,7 @@ public class LobbyManager : NetworkBehaviour
         Debug.Log("Connected player with id: " + id);
         
         LobbyUpdateStateEvent?.Invoke(LobbyUpdateState.FOUND_PLAYER);
-        MatchFoundEvent?.Invoke();
+        LobbyEntered?.Invoke();
     }
 
     #endregion

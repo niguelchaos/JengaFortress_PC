@@ -21,7 +21,7 @@ public class DebugUI : MonoBehaviour
     {
         GameManager.OnGameStateChanged += OnGameStateChanged;
         GameManager.OnPlayingStateChanged += OnPlayingStateChanged;
-        LobbyManager.Instance.LobbyUpdateStateEvent += OnLobbyUpdateState;
+        LobbyManager.LobbyUpdateStateEvent += OnLobbyUpdateState;
         // LobbyManager.Instance.MatchHostedEvent += OnMatchFound;
 
         gameStateCube = GameObject.Find("GameStateCube");
@@ -93,6 +93,6 @@ public class DebugUI : MonoBehaviour
     {
         GameManager.OnGameStateChanged -= OnGameStateChanged;
         GameManager.OnPlayingStateChanged -= OnPlayingStateChanged;
-        LobbyManager.Instance.LobbyUpdateStateEvent -= OnLobbyUpdateState;
+        LobbyManager.LobbyUpdateStateEvent -= OnLobbyUpdateState;
     }
 }

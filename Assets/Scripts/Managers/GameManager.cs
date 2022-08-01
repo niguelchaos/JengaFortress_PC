@@ -66,35 +66,48 @@ public class GameManager : NetworkBehaviour
     private void Start()
     {
         // set to main menu
-        LobbyManager.Instance.MatchHostedEvent += OnMatchHosted;
+        // LobbyManager.LobbyEntered += OnLobbyEntered;
+        // NetworkManager.Singleton.OnServerStarted += OnLobbyEntered;
+        NetworkManager.Singleton.OnClientConnectedCallback += OnLobbyEnteredClient;
+        NetworkManager.Singleton.OnServerStarted += OnLobbyEnteredServer;
     }
 
     public override void OnNetworkSpawn() {
-        SpawnPlayerServerRpc(NetworkManager.Singleton.LocalClientId);
     }   
 
     [ServerRpc(RequireOwnership = false)]
     private void SpawnPlayerServerRpc(ulong playerId) {
         var spawn = Instantiate(_playerPrefab);
         print("Spawning...");
-        spawn.GetComponent<NetworkObject>().SpawnWithOwnership(playerId);
+        spawn.GetComponent<NetworkObject>().SpawnAsPlayerObject(playerId);
     }
 
     public override void OnDestroy() {
         base.OnDestroy();
+
+        // LobbyManager.LobbyEntered -= OnLobbyEntered;
+        // NetworkManager.Singleton.OnClientConnectedCallback -= OnLobbyEnteredClient;
+        // NetworkManager.Singleton.OnServerStarted -= OnLobbyEnteredServer;
+
+
         MatchmakingService.LeaveLobby();
         if(NetworkManager.Singleton != null )NetworkManager.Singleton.Shutdown();
     }
 
-    
 
-    
-
-
-    private void OnMatchHosted()
+    private void OnLobbyEnteredClient(ulong id)
     {
-        SetGameState(GameState.SETUP);
+        if (!IsServer)
+        {
+            SpawnPlayerServerRpc(NetworkManager.Singleton.LocalClientId);
+        }
     }
+    private void OnLobbyEnteredServer()
+    {
+        SpawnPlayerServerRpc(NetworkManager.Singleton.LocalClientId);
+    }
+
+
 
     private void OnGameStarted()
     {
