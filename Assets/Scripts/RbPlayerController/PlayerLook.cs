@@ -35,10 +35,10 @@ public class PlayerLook : PlayerClient
     //     Destroy(this);
     // }
 
-    // void OnDestroy()
-    // {
-    //     Player.notNetworkOwnerEvent -= OnNotNetworkOwner;
-    // }
+    void OnDestroy()
+    {
+        Cursor.lockState = CursorLockMode.None;
+    }
     
     private void Update()
     {

@@ -7,7 +7,7 @@ using UnityEngine;
 public class CreateLobbyScreen : MonoBehaviour {
     [SerializeField] private TMP_InputField _nameInput, _maxPlayersInput;
     // [SerializeField] private TMP_Dropdown _typeDropdown, _difficultyDropdown;
-
+    
     private void Start() {
         // SetOptions(_typeDropdown, LobbyConstants.GameTypes);
         // SetOptions(_difficultyDropdown, LobbyConstants.Difficulties);

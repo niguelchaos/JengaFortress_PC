@@ -242,17 +242,34 @@ public class LobbyManager : NetworkBehaviour
             await MatchmakingService.LeaveLobby();
         // }
     }
+
     private async void OnGameStart() {
         // using (new Load("Starting the game...")) {
             await MatchmakingService.LockLobby();
             print("Locking Lobby, starting game");
 
-            if (SceneManager.GetActiveScene().name == "Lobby")
-            {
-                // NetworkManager.Singleton.SceneManager.LoadScene("Scenes/GameTest", LoadSceneMode.Single);
-            }
+            ChangeScene();
+            // GameStartClientRpc();
         // }
     }
+
+    private void ChangeScene()
+    {
+        if (SceneManager.GetActiveScene().name == "Lobby")
+        {
+            NetworkManager.Singleton.SceneManager.LoadScene("Scenes/FindTheCore", LoadSceneMode.Single);
+        }
+    }
+
+    [ClientRpc]
+    private void GameStartClientRpc() {
+        if (IsServer || IsHost) return;
+
+        print("clients changing scene");
+        ChangeScene();
+    }
+
+
     
     public override void OnDestroy() {
      
@@ -268,8 +285,16 @@ public class LobbyManager : NetworkBehaviour
         if (NetworkManager.Singleton != null) {
             NetworkManager.Singleton.OnClientConnectedCallback -= ClientConnected;
             NetworkManager.Singleton.OnClientDisconnectCallback -= OnClientDisconnectCallback;
+        }      
+    }
+
+    public void OnApplicationQuit()
+    {
+        print("Quitting app");
+        if (IsServer)
+        {
+            OnLobbyLeft();
         }
-      
     }
     
 

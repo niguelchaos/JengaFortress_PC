@@ -78,7 +78,7 @@ public class RoomScreen : MonoBehaviour {
             }
         }
 
-        // _startButton.SetActive(NetworkManager.Singleton.IsHost && players.All(p => p.Value));
+        _startButton.SetActive(NetworkManager.Singleton.IsHost && players.All(p => p.Value));
         // _readyButton.SetActive(!_ready);
     }
 

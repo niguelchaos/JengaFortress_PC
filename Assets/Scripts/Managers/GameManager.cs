@@ -50,9 +50,6 @@ public class GameManager : NetworkBehaviour
     public static event Action<PlayingState> OnPlayingStateChanged;
     public static event Action<CurrentPlayer> OnCurrentPlayerChanged;
 
-    [SerializeField] private GameObject _playerPrefab;
-    
-
     
     // awake should contain self setup stuff
     private void Awake()
@@ -63,50 +60,32 @@ public class GameManager : NetworkBehaviour
         SetPlayingState(PlayingState.START_TURN);
     }
 
-    private void Start()
+    private void Update()
     {
-        // set to main menu
-        // LobbyManager.LobbyEntered += OnLobbyEntered;
-        // NetworkManager.Singleton.OnServerStarted += OnLobbyEntered;
-        NetworkManager.Singleton.OnClientConnectedCallback += OnLobbyEnteredClient;
-        NetworkManager.Singleton.OnServerStarted += OnLobbyEnteredServer;
+        OnEscInput();
     }
 
-    public override void OnNetworkSpawn() {
-    }   
-
-    [ServerRpc(RequireOwnership = false)]
-    private void SpawnPlayerServerRpc(ulong playerId) {
-        var spawn = Instantiate(_playerPrefab);
-        print("Spawning...");
-        spawn.GetComponent<NetworkObject>().SpawnAsPlayerObject(playerId);
+    private void OnEscInput()
+    {
+        if (InputManager.Instance.escInput)
+        {
+            if (Cursor.lockState == CursorLockMode.Locked)
+            {
+                Cursor.lockState = CursorLockMode.None;
+            }
+            else {
+                Cursor.lockState = CursorLockMode.Locked;
+            }
+        }
     }
+    
 
     public override void OnDestroy() {
         base.OnDestroy();
 
-        // LobbyManager.LobbyEntered -= OnLobbyEntered;
-        // NetworkManager.Singleton.OnClientConnectedCallback -= OnLobbyEnteredClient;
-        // NetworkManager.Singleton.OnServerStarted -= OnLobbyEnteredServer;
-
-
         MatchmakingService.LeaveLobby();
         if(NetworkManager.Singleton != null )NetworkManager.Singleton.Shutdown();
     }
-
-
-    private void OnLobbyEnteredClient(ulong id)
-    {
-        if (!IsServer)
-        {
-            SpawnPlayerServerRpc(NetworkManager.Singleton.LocalClientId);
-        }
-    }
-    private void OnLobbyEnteredServer()
-    {
-        SpawnPlayerServerRpc(NetworkManager.Singleton.LocalClientId);
-    }
-
 
 
     private void OnGameStarted()

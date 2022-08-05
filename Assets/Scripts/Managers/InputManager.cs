@@ -17,12 +17,11 @@ public class InputManager : MonoBehaviour
     private InputAction fireAction;
     private InputAction reloadAction;
     private InputAction attackAction;
+    private InputAction escAction;
     private List<InputAction> weaponSwapActions = new List<InputAction>();
     
     // Debug
     private InputAction endTurnAction;
-
-
 
     [SerializeField] public Vector2 moveDir { get; private set; }
     [SerializeField] public Vector2 lookInput { get; private set; }
@@ -32,6 +31,7 @@ public class InputManager : MonoBehaviour
     [SerializeField] public bool fireInput { get; private set; }
     [SerializeField] public bool reloadInput { get; private set; }
     [SerializeField] public bool attackInput { get; private set; }
+    [SerializeField] public bool escInput { get; private set; }
     // [SerializeField] public bool weaponSwap1Input { get; private set; }
 
     // debug
@@ -53,6 +53,7 @@ public class InputManager : MonoBehaviour
         if (fireAction != null) fireAction.Disable();
         if (reloadAction != null) reloadAction.Disable();
         if (attackAction != null) attackAction.Disable();
+        if (escAction != null) escAction.Disable();
         if (weaponSwapActions != null) {
             foreach (InputAction weaponAction in weaponSwapActions)
             { weaponAction.Disable(); }   
@@ -89,6 +90,7 @@ public class InputManager : MonoBehaviour
             fireAction = playerInput.actions["Fire"];
             reloadAction = playerInput.actions["Reload"];
             attackAction = playerInput.actions["Attack"];
+            escAction = playerInput.actions["Escape"];
             // weaponSwap1Action = playerInput.actions["WeaponSwap1"];
 
             // debug
@@ -103,6 +105,7 @@ public class InputManager : MonoBehaviour
             fireAction.Enable();
             reloadAction.Enable();
             attackAction.Enable();
+            escAction.Enable();
             // if (weaponSwapActions.Length > 0) {
             //     foreach (InputAction weaponAction in weaponSwapActions)
             //     { weaponAction.Enable(); }   
@@ -147,6 +150,9 @@ public class InputManager : MonoBehaviour
         
         attackAction.performed += OnAttackInput;
         attackAction.canceled += OnAttackInput;
+
+        escAction.performed += OnEscInput;
+        escAction.canceled += OnEscInput;
 
         // if (weaponSwapActions.Length > 0) {
         //     foreach (InputAction weaponAction in weaponSwapActions)
@@ -199,6 +205,10 @@ public class InputManager : MonoBehaviour
     public void OnAttackInput(InputAction.CallbackContext context)
     {  
         this.attackInput = context.performed;
+    }
+    public void OnEscInput(InputAction.CallbackContext context)
+    {  
+        this.escInput = context.performed;
     }
     public void OnWeaponSwapInput(InputAction.CallbackContext context)
     {  
@@ -254,6 +264,9 @@ public class InputManager : MonoBehaviour
             
             attackAction.performed -= OnAttackInput;
             attackAction.canceled -= OnAttackInput;
+
+            escAction.performed -= OnEscInput;
+            escAction.canceled -= OnEscInput;
 
             // weaponSwapAction.performed -= OnWeaponSwapInput;
             // weaponSwapAction.canceled -= OnWeaponSwapInput;

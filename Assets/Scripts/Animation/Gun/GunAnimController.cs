@@ -61,10 +61,12 @@ public class GunAnimController : NetworkBehaviour
       }
    }
 
-   // private void OnDestroy()
-   // {
-   //    UnsubEvents();
-   // }
+   public override void OnDestroy()
+   {
+      base.OnDestroy();
+      
+      UnsubEvents();
+   }
 
    public void UnsubEvents()
    {

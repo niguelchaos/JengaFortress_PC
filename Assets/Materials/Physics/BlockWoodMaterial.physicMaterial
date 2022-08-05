@@ -9,6 +9,6 @@ PhysicMaterial:
   m_Name: BlockWoodMaterial
   dynamicFriction: 0.475
   staticFriction: 0.55
-  bounciness: 0
+  bounciness: 0.05
   frictionCombine: 0
   bounceCombine: 0

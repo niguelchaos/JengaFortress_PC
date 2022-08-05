@@ -20,6 +20,11 @@ public class PlayerGunstick : PlayerClient
       Gun.propelActionEvent += Propel;
    }
 
+   private void OnDestroy()
+   {
+      Gun.propelActionEvent -= Propel;
+   }
+
    private void Update()
    {
       ReceiveInput();
@@ -53,7 +58,7 @@ public class PlayerGunstick : PlayerClient
 
    private State UpdateIdleState()
    {
-      if (InputManager.Instance.fireInput && !Player.hasFired)
+      if (InputManager.Instance.fireInput)
       {
          return State.Fire;
       }
@@ -80,8 +85,12 @@ public class PlayerGunstick : PlayerClient
 
    private void Fire()
    {
-      fireActionEvent?.Invoke();
-      Player.hasFired = true;
+      if (!Player.hasFired)
+      {
+         // print("Firing: " + Player.hasFired);
+         fireActionEvent?.Invoke();
+         Player.hasFired = true;
+      }
    }
 
    private void Propel(GameObject muzzle)

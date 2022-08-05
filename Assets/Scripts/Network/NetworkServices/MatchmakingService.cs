@@ -15,6 +15,8 @@ using Object = UnityEngine.Object;
 public static class MatchmakingService {
     private const int HeartbeatInterval = 15;
     private const int LobbyRefreshRate = 2; // Rate limits at 2
+    private const int MinPlayers = 1;
+    private const int MaxPlayers = 10;
 
     private static UnityTransport _transport;
 
@@ -54,6 +56,10 @@ public static class MatchmakingService {
     }
 
     public static async Task CreateLobbyWithAllocation(LobbyData data) {
+
+        if (data.MaxPlayers > MaxPlayers) data.MaxPlayers = MaxPlayers;
+        else if (data.MaxPlayers < MinPlayers) data.MaxPlayers = MinPlayers;
+        
         // Create a relay allocation and generate a join code to share with the lobby
         Allocation a = await RelayService.Instance.CreateAllocationAsync(data.MaxPlayers);
         string joinCode = await RelayService.Instance.GetJoinCodeAsync(a.AllocationId);

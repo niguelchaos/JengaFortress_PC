@@ -46,8 +46,14 @@ public class Gun : NetworkBehaviour
 
     }
 
+    public override void OnDestroy()
+    {
+        base.OnDestroy();
 
-    // Update is called once per frame
+        UnsubEvents();
+    }
+
+
     void Update()
     {
         Debug.DrawRay(muzzle.transform.position, muzzle.transform.forward, Color.magenta);
@@ -130,6 +136,8 @@ public class Gun : NetworkBehaviour
     {
         // fire for ourselves first
         FireProjectile(muzzle.transform.position, fireBlockForce);
+        // print("Firing for Self ");
+
         // request server: i just pressed button, spawn projectile from location
         RequestGunshotServerRpc(muzzle.transform.position, fireBlockForce);
 
@@ -201,6 +209,7 @@ public class Gun : NetworkBehaviour
        
         if (!IsOwner)
         {
+            // print("Firing client ");
             FireProjectile(dir, fireForce);
         }
     }
