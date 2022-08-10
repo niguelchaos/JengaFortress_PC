@@ -6,7 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 0
-    path: Assets/Scenes/SampleScene.unity
+    path: Assets/Scenes/Deprecated/SampleScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 0
     path: Assets/Scenes/BaseTest.unity
@@ -18,9 +18,12 @@ EditorBuildSettings:
     path: Assets/Scenes/Menu/Lobby.unity
     guid: 271aa09f075a6fb4db0410943cce33d7
   - enabled: 0
-    path: Assets/Scenes/GameTest.unity
+    path: Assets/Scenes/Deprecated/GameTest.unity
     guid: 9588469d0eb76a1429405d88fadd20ea
   - enabled: 1
     path: Assets/Scenes/FindTheCore.unity
     guid: 2d8a12058b998ab419c1c3bd4453ebb3
+  - enabled: 0
+    path: Assets/Scenes/Deprecated/LobbyRoom.unity
+    guid: 7e2db9c2d90bcec48a592e93eb20e3c7
   m_configObjects: {}

@@ -380,6 +380,14 @@ PrefabInstance:
       propertyPath: camHolder
       value: 
       objectReference: {fileID: 5778932589244852628}
+    - target: {fileID: 1704106533712321421, guid: a28d3afccc06cf14d9c6acdc5dddc962, type: 3}
+      propertyPath: m_Drag
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1704106533712321421, guid: a28d3afccc06cf14d9c6acdc5dddc962, type: 3}
+      propertyPath: m_AngularDrag
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 1704106533712321422, guid: a28d3afccc06cf14d9c6acdc5dddc962, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -432,25 +440,9 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: -1.033
       objectReference: {fileID: 0}
-    - target: {fileID: 3896645134786389034, guid: a28d3afccc06cf14d9c6acdc5dddc962, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4819828548957372858, guid: a28d3afccc06cf14d9c6acdc5dddc962, type: 3}
-      propertyPath: inAirGravMultiplier
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 6614099526907159597, guid: a28d3afccc06cf14d9c6acdc5dddc962, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6614099526907159597, guid: a28d3afccc06cf14d9c6acdc5dddc962, type: 3}
-      propertyPath: SyncScaleY
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6614099526907159597, guid: a28d3afccc06cf14d9c6acdc5dddc962, type: 3}
-      propertyPath: RotAngleThreshold
-      value: 0.1
+      propertyPath: useGravity
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8056098228764978958, guid: a28d3afccc06cf14d9c6acdc5dddc962, type: 3}
       propertyPath: muzzle

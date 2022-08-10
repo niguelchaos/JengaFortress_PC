@@ -109,10 +109,12 @@ GameObject:
   - component: {fileID: 1704106533712321422}
   - component: {fileID: 1704106533712321421}
   - component: {fileID: 6614099526907159597}
+  - component: {fileID: 3896645134786389034}
   - component: {fileID: 1704106533712321417}
   - component: {fileID: 9124178666699362865}
   - component: {fileID: 3206886555899336008}
   - component: {fileID: 1704106533712321420}
+  - component: {fileID: 3212966619105099590}
   - component: {fileID: 8147402610912446486}
   - component: {fileID: 4819828548957372858}
   - component: {fileID: 8136683810768731398}
@@ -120,7 +122,6 @@ GameObject:
   - component: {fileID: 371612703882470563}
   - component: {fileID: 8154514619484896997}
   - component: {fileID: 8056098228764978958}
-  - component: {fileID: 3896645134786389034}
   - component: {fileID: 6742676181014923673}
   m_Layer: 0
   m_Name: PlayerBody
@@ -171,7 +172,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1704106533712321423}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: df2868252ab5c4d1da357e8f11f1b524, type: 3}
   m_Name: 
@@ -183,13 +184,27 @@ MonoBehaviour:
   SyncRotAngleY: 1
   SyncRotAngleZ: 1
   SyncScaleX: 0
-  SyncScaleY: 0
+  SyncScaleY: 1
   SyncScaleZ: 0
   PositionThreshold: 0.001
-  RotAngleThreshold: 0.01
+  RotAngleThreshold: 0.1
   ScaleThreshold: 0.01
   InLocalSpace: 0
   Interpolate: 1
+--- !u!114 &3896645134786389034
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1704106533712321423}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e838ad7dd4877c74c82a76d5a243c67d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cheapInterpolationTime: 0.1
+  usingServerAuth: 0
 --- !u!114 &1704106533712321417
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -299,6 +314,14 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 92c3887c-52d2-4d44-9720-d91323c018df
     m_ActionName: Player/EndTurnDebug[/Keyboard/o]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 693f186a-4699-40b5-aace-b7821e0fbe30
+    m_ActionName: Player/WeaponSwap1[/Keyboard/1]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 216117d1-d2b9-4b79-b800-dbdbec37b3b8
+    m_ActionName: Player/Escape[/Keyboard/backslash]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -329,6 +352,7 @@ MonoBehaviour:
   cam: {fileID: 0}
   currentTilt: 0
   rb: {fileID: 0}
+  flyMode: 1
   hasFired: 0
 --- !u!114 &3206886555899336008
 MonoBehaviour:
@@ -368,6 +392,25 @@ MonoBehaviour:
   groundDrag: 6
   airDrag: 2
   orientation: {fileID: 1704106534078235677}
+--- !u!114 &3212966619105099590
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1704106533712321423}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e8cb61340e9e1641b9b08b93ddc0b3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  state: 0
+  moveSpeed: 0
+  moveVel: {x: 0, y: 0, z: 0}
+  slopeMoveDir: {x: 0, y: 0, z: 0}
+  groundDrag: 6
+  airDrag: 6
+  orientation: {fileID: 1704106534078235677}
 --- !u!114 &8147402610912446486
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -399,7 +442,7 @@ MonoBehaviour:
   wallRunGravity: 2
   defaultGravityScale: 5
   currentAirGravity: 5
-  inAirGravMultiplier: 1.1
+  inAirGravMultiplier: 10
 --- !u!114 &8136683810768731398
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -479,20 +522,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   propelForce: 150
---- !u!114 &3896645134786389034
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1704106533712321423}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e838ad7dd4877c74c82a76d5a243c67d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _cheapInterpolationTime: 0.1
-  usingServerAuth: 0
 --- !u!114 &6742676181014923673
 MonoBehaviour:
   m_ObjectHideFlags: 0

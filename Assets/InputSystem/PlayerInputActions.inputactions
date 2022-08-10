@@ -96,9 +96,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Escape",
+                    "name": "LockCursor",
                     "type": "Button",
                     "id": "216117d1-d2b9-4b79-b800-dbdbec37b3b8",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "FlyMode",
+                    "type": "Button",
+                    "id": "a5b5e05b-7498-40eb-b69d-21b2eab319a1",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -344,7 +353,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Escape",
+                    "action": "LockCursor",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bae05ead-9cf7-45f6-84a4-1ce236b5365d",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "FlyMode",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
