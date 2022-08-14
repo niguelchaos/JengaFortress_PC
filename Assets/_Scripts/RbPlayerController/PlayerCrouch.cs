@@ -7,25 +7,12 @@ public class PlayerCrouch : PlayerClient
 {
    private enum State { Idle, Crouching}
    [SerializeField] private State state = State.Idle;
-
-   [SerializeField] private float crouchYScale = 0.75f;
-   [SerializeField] private float downForceMultiplier = 5f;
+   [SerializeField] private PlayerCrouchData CrouchData;
 
    private void Start()
    {
-      Player.startYScale = transform.localScale.y;
-      // Player.notNetworkOwnerEvent += OnNotNetworkOwner;
+      Player.Data.startYScale = transform.localScale.y;
    }
-   
-   // private void OnNotNetworkOwner()
-   // {
-   //    Destroy(this);
-   // }
-
-   // void OnDestroy()
-   // {
-   //    Player.notNetworkOwnerEvent -= OnNotNetworkOwner;
-   // }
 
    private void Update()
    {
@@ -55,12 +42,12 @@ public class PlayerCrouch : PlayerClient
    {
       if (InputManager.Instance.isCrouching)
       {
-         transform.localScale = new Vector3(transform.localScale.x, crouchYScale, transform.localScale.z);
+         transform.localScale = new Vector3(transform.localScale.x, CrouchData.crouchYScale, transform.localScale.z);
          
          if (Player.isGrounded)
          {
             // Debug.Log("Crouching Force");
-            Player.rb.AddForce(Vector3.down * downForceMultiplier, ForceMode.Impulse);
+            Player.rb.AddForce(Vector3.down * CrouchData.downForceMultiplier, ForceMode.Impulse);
          }
          return State.Crouching;
       }
@@ -77,7 +64,7 @@ public class PlayerCrouch : PlayerClient
       }
       else 
       {
-         transform.localScale = new Vector3(transform.localScale.x, Player.startYScale, transform.localScale.z);
+         transform.localScale = new Vector3(transform.localScale.x, Player.Data.startYScale, transform.localScale.z);
          return State.Idle;
       }
    }
@@ -89,7 +76,7 @@ public class PlayerCrouch : PlayerClient
          if (Player.isGrounded)
          {
             Debug.Log("Crouching Force");
-            Player.rb.AddForce(Vector3.down * downForceMultiplier, ForceMode.Impulse);
+            Player.rb.AddForce(Vector3.down * CrouchData.downForceMultiplier, ForceMode.Impulse);
          }
       }    
    }

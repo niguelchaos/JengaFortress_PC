@@ -9,8 +9,8 @@ public class PlayerGunstick : PlayerClient
 {
    private enum State { Idle, Fire, Reloading}
    [SerializeField] private State state = State.Idle;
+   [SerializeField] private PlayerGunstickData GunstickData;
 
-   [SerializeField] private float propelForce = 150f;
 
    public static Action fireActionEvent;
    public static Action reloadActionEvent;
@@ -96,7 +96,7 @@ public class PlayerGunstick : PlayerClient
    private void Propel(GameObject muzzle)
    {
       Vector3 propelDir = GetDistance(muzzle);
-      Player.rb.AddRelativeForce(propelDir * propelForce, ForceMode.Impulse);
+      Player.rb.AddRelativeForce(propelDir * GunstickData.propelForce, ForceMode.Impulse);
    }
 
    private Vector3 GetDistance(GameObject muzzle)

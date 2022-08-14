@@ -2,8 +2,6 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Unity.Netcode;
 
-
-
 /// <summary>
 /// Shared data used by FSMs.
 /// I'm playing a little loose with the idea of a blackboard here since it
@@ -17,21 +15,17 @@ public class Player : NetworkBehaviour
 {
     // Note: Public to make it easy to see in inspector.
     // Ideally they'd be private with [SerializeField], but keeping code simple.
+
+    [SerializeField] public PlayerData Data;
+
     [Header("Input")]
     private PlayerInput playerInput;
-
-    [Header("Entity")]
-    [SerializeField] public float playerHeight;
 
     [Header("Movement")]
     [SerializeField] public bool isGrounded;
     [SerializeField] public bool hasJumped;
     [SerializeField] public bool isOnSlope;
-    // [SerializeField] public bool isFlying;
     [SerializeField] public bool isFalling;
-
-    [Header("Crouch")]
-    public float startYScale;
     
     [Header("Wallrun")]
     [SerializeField] public bool isWallRunning;
@@ -40,28 +34,32 @@ public class Player : NetworkBehaviour
     [SerializeField] public RaycastHit leftWallHit;
     [SerializeField] public RaycastHit rightWallHit;
 
+    [Header("Physics")]
+    public Rigidbody rb;
+    public bool flyMode = true;
+    
+    [Header("Entity")]
+    [SerializeField] public float playerHeight;
+
     [Header("Camera")]
     [SerializeField] public Camera cam;
-    public float currentTilt;
-
-    [Header("Physics")]
-    [SerializeField] public Rigidbody rb;
-    [SerializeField] public bool flyMode = true;
-
 
     [Header("Weapon")]
     [SerializeField] public bool hasFired;
 
-    private PlayerNum playerNum;
+    public PlayerNum playerNum;
+    
+
+
 
     
 
 
     private void Awake()
     {
-        this.rb = GetComponent<Rigidbody>();
         this.playerInput = GetComponent<PlayerInput>();
-        // this.cam = GetComponent<Camera>();
+        rb = GetComponent<Rigidbody>();
+        Data.groundMask = LayerMask.GetMask(EditorConstants.LAYER_GROUND, EditorConstants.LAYER_BLOCK);
     }
 
     private void Start()

@@ -7,17 +7,16 @@ public class PlayerJump : PlayerClient
 {
    private enum State { Idle, Jumping, Walljump}
    [SerializeField] private State state = State.Idle;
+   
+   [SerializeField] private PlayerJumpData JumpData;
 
-   [SerializeField] private float jumpForce = 40f;
-   [SerializeField] private float wallJumpForce = 20f;
+
+
+   // [SerializeField] private float jumpForce = 40f;
+   // [SerializeField] private float wallJumpForce = 20f;
 
    // [SerializeField] private bool hasJumped = false;
    
-   private void Start()
-   {
-      // Player.notNetworkOwnerEvent += OnNotNetworkOwner;
-   }
-
    private void Update()
    {
       ReceiveInput();
@@ -82,7 +81,7 @@ public class PlayerJump : PlayerClient
    {
       // print("-- jumping");
       Player.rb.velocity = new Vector3(Player.rb.velocity.x, 0, Player.rb.velocity.z);
-      Player.rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+      Player.rb.AddForce(transform.up * JumpData.jumpForce, ForceMode.Impulse);
       Player.hasJumped = true;
       
    }
@@ -95,13 +94,13 @@ public class PlayerJump : PlayerClient
       {
             Vector3 wallJumpDir = (transform.up + Player.leftWallHit.normal).normalized;
             Player.rb.velocity = new Vector3(Player.rb.velocity.x, 0, Player.rb.velocity.z);
-            Player.rb.AddForce(wallJumpDir * wallJumpForce * 100, ForceMode.Force);
+            Player.rb.AddForce(wallJumpDir * JumpData.wallJumpForce * 100, ForceMode.Force);
       }
       else if (Player.isWallRight)
       {
             Vector3 wallJumpDir = (transform.up + Player.rightWallHit.normal).normalized;
             Player.rb.velocity = new Vector3(Player.rb.velocity.x, 0, Player.rb.velocity.z);
-            Player.rb.AddForce(wallJumpDir * wallJumpForce * 100, ForceMode.Force);
+            Player.rb.AddForce(wallJumpDir * JumpData.wallJumpForce * 100, ForceMode.Force);
       }
    }
 

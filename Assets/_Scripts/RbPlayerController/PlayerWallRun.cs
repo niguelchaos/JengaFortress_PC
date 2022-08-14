@@ -7,32 +7,9 @@ public class PlayerWallRun : PlayerClient
 {
     private enum State { Idle, Wallrunning, Stopping}
     [SerializeField] private State state = State.Idle;
+    [SerializeField] private PlayerWallRunData WallRunData;
 
     [SerializeField] Transform orientation;
-
-    [SerializeField] private float wallDist = 0.5f;
-    [SerializeField] private float minJumpHeight = 1.5f;
-    private LayerMask groundMask;
-
-
-    
-    // public float currentTilt { get; private set; }
-
-    private void Start()
-    {
-        groundMask = LayerMask.GetMask(EditorConstants.LAYER_GROUND, EditorConstants.LAYER_BLOCK);
-        // Player.notNetworkOwnerEvent += OnNotNetworkOwner;
-    }
-
-    // private void OnNotNetworkOwner()
-    // {
-    //     Destroy(this);
-    // }
-
-    // void OnDestroy()
-    // {
-    //     Player.notNetworkOwnerEvent -= OnNotNetworkOwner;
-    // }
 
     private void Update()
     {
@@ -102,17 +79,17 @@ public class PlayerWallRun : PlayerClient
     private void CheckWall()
     {
         // rotating orientation when we look
-        Player.isWallLeft = Physics.Raycast(transform.position, -orientation.right, out Player.leftWallHit, wallDist, groundMask);
-        Player.isWallRight = Physics.Raycast(transform.position, orientation.right, out Player.rightWallHit, wallDist, groundMask);
+        Player.isWallLeft = Physics.Raycast(transform.position, -orientation.right, out Player.leftWallHit, WallRunData.wallDist, Player.Data.groundMask);
+        Player.isWallRight = Physics.Raycast(transform.position, orientation.right, out Player.rightWallHit, WallRunData.wallDist, Player.Data.groundMask);
 
-        Debug.DrawRay(transform.position, -orientation.right * wallDist, Color.green);
-        Debug.DrawRay(transform.position, orientation.right * wallDist, Color.cyan);
+        Debug.DrawRay(transform.position, -orientation.right * WallRunData.wallDist, Color.green);
+        Debug.DrawRay(transform.position, orientation.right * WallRunData.wallDist, Color.cyan);
 
     }
     
     private bool CanWallRun()
     {
-        bool isGroundedRaycast = Physics.Raycast(transform.position, Vector3.down, minJumpHeight);
+        bool isGroundedRaycast = Physics.Raycast(transform.position, Vector3.down, WallRunData.minJumpHeight);
         return !isGroundedRaycast;
     }
 

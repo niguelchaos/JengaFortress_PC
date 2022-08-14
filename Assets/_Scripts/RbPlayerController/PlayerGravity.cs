@@ -7,17 +7,8 @@ public class PlayerGravity : PlayerClient
    private enum State { Normal, Wallrun, InAir, Fly }
    [SerializeField] private State state = State.Normal;
 
+   [SerializeField] private PlayerGravityData GravityData;
 
-   [SerializeField] private float wallRunGravity = 2f;
-   [SerializeField] private float defaultGravityScale = 5;
-
-   [SerializeField] private float currentAirGravity = 5f;
-   [SerializeField] private float inAirGravMultiplier = 1.1f;
-   
-   private void Start()
-   {
-   }
-    
    private void Update()
    {
       state = UpdateState();
@@ -71,12 +62,12 @@ public class PlayerGravity : PlayerClient
          case State.Normal:
             Player.rb.useGravity = true;
             ResetInAirGravity();
-            Player.rb.AddForce(Physics.gravity * defaultGravityScale, ForceMode.Acceleration);
+            Player.rb.AddForce(Physics.gravity * GravityData.defaultGravityScale, ForceMode.Acceleration);
             break;
          case State.Wallrun:
             Player.rb.useGravity = false;
             ResetInAirGravity();
-            Player.rb.AddForce(Vector3.down * wallRunGravity, ForceMode.Force);
+            Player.rb.AddForce(Vector3.down * GravityData.wallRunGravity, ForceMode.Force);
             break;
          case State.Fly:
             ResetInAirGravity();
@@ -84,15 +75,15 @@ public class PlayerGravity : PlayerClient
             break;
          case State.InAir:
             Player.rb.useGravity = true;
-            currentAirGravity = currentAirGravity + (inAirGravMultiplier * Time.deltaTime);
-            Player.rb.AddForce(Physics.gravity *  currentAirGravity, ForceMode.Acceleration);
+            GravityData.currentAirGravity = GravityData.currentAirGravity + (GravityData.inAirGravMultiplier * Time.deltaTime);
+            Player.rb.AddForce(Physics.gravity * GravityData.currentAirGravity, ForceMode.Acceleration);
             break;
       }
    }
 
    private void ResetInAirGravity()
    {
-      currentAirGravity = defaultGravityScale;
+      GravityData.currentAirGravity = GravityData.defaultGravityScale;
    }
 
 }

@@ -8,36 +8,20 @@ public class PlayerFly : PlayerClient
     private enum State { Idle, Fly, Sprint}
     [SerializeField] private State state = State.Idle;
 
+    [SerializeField] private PlayerMovementData MoveData;
+
+
     [Header("Movement")]
-    [SerializeField] private float moveSpeed;
-    [SerializeField] private const float walkSpeed = 6f;
-    [SerializeField] private const float sprintSpeed = 24f;
-    [SerializeField] private const float accelSpeed = 10f;
-
-    // [SerializeField] private float groundMultiplier = 10f;
-    // [SerializeField] private float airMultiplier = 0.4f;
     [SerializeField] private Vector3 moveVel;
+    private float moveSpeed;
     private Vector3 moveDir;
-
 
     [Space]
     private RaycastHit slopeHit;
-    private float slopeRayExtraLength = 1f;
-    public Vector3 slopeMoveDir;
-
-    // [Header("Drag")]
-    [Space]
-    [SerializeField] private float groundDrag = 6f;
-    [SerializeField] private float airDrag = 6f;
+    private Vector3 slopeMoveDir;
 
     [Space]
-    [SerializeField] Transform orientation;
-
-
-    private void Start()
-    {
-        
-    }
+    [SerializeField] private Transform orientation;
 
 
     // Update is called once per frame
@@ -84,14 +68,14 @@ public class PlayerFly : PlayerClient
 
     private State UpdateFlyState()
     {
-        moveSpeed = Mathf.Lerp(moveSpeed, walkSpeed, accelSpeed * Time.deltaTime);
+        moveSpeed = Mathf.Lerp(moveSpeed, MoveData.walkSpeed, MoveData.accelSpeed * Time.deltaTime);
 
         State currentState = CheckState();
         return currentState;
     }
     private State UpdateSprintState()
     {
-        moveSpeed = Mathf.Lerp(moveSpeed, sprintSpeed, accelSpeed * Time.deltaTime);
+        moveSpeed = Mathf.Lerp(moveSpeed, MoveData.sprintSpeed, MoveData.accelSpeed * Time.deltaTime);
 
         State currentState = CheckState();
         return currentState;
@@ -163,10 +147,10 @@ public class PlayerFly : PlayerClient
     {
         if (Player.isGrounded)
         {
-            Player.rb.drag = groundDrag;
+            Player.rb.drag = MoveData.groundDrag;
         }
         else if (!Player.isGrounded) {
-            Player.rb.drag = airDrag;
+            Player.rb.drag = MoveData.airDrag;
         }
     }
 
@@ -178,8 +162,8 @@ public class PlayerFly : PlayerClient
     private bool OnSlope()
     {
         // bool slopeRaycast = Physics.Raycast(transform.position, Vector3.down, out slopeHit, playerController.playerHeight / 2 + 0.5f);
-        bool slopeRaycast = Physics.Raycast(transform.position, Vector3.down, out slopeHit, Player.playerHeight + slopeRayExtraLength);
-        Debug.DrawRay(transform.position, Vector3.down * (Player.playerHeight + slopeRayExtraLength), Color.black);
+        bool slopeRaycast = Physics.Raycast(transform.position, Vector3.down, out slopeHit, Player.playerHeight + MoveData.slopeRayExtraLength);
+        Debug.DrawRay(transform.position, Vector3.down * (Player.playerHeight + MoveData.slopeRayExtraLength), Color.black);
 
         if (slopeRaycast) 
         {

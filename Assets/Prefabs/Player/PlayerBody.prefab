@@ -322,6 +322,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 216117d1-d2b9-4b79-b800-dbdbec37b3b8
     m_ActionName: Player/Escape[/Keyboard/backslash]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: a5b5e05b-7498-40eb-b69d-21b2eab319a1
+    m_ActionName: Player/FlyMode[/Keyboard/q]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -339,21 +343,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f170e54a47b5234fb0bd3c476e0b301, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerHeight: 0
+  Data: {fileID: 11400000, guid: c6fecf078b3d2fc479de95fdbb01d158, type: 2}
   isGrounded: 0
   hasJumped: 0
   isOnSlope: 0
-  isFlying: 0
   isFalling: 0
-  startYScale: 0
   isWallRunning: 0
   isWallLeft: 0
   isWallRight: 0
-  cam: {fileID: 0}
-  currentTilt: 0
   rb: {fileID: 0}
-  flyMode: 1
+  flyMode: 0
+  playerHeight: 0
+  cam: {fileID: 0}
   hasFired: 0
+  playerNum: 0
 --- !u!114 &3206886555899336008
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -380,17 +383,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
-  moveSpeed: 70
-  walkSpeed: 140
-  sprintSpeed: 200
-  crouchSpeed: 90
-  accelSpeed: 10
-  groundMultiplier: 1
-  airMultiplier: 0.4
+  MoveData: {fileID: 11400000, guid: 556c0bc676cec874c869be3e1d2532c4, type: 2}
   moveVel: {x: 0, y: 0, z: 0}
-  slopeMoveDir: {x: 0, y: 0, z: 0}
-  groundDrag: 6
-  airDrag: 2
+  moveMag: 0
+  moveSpeed: 0
   orientation: {fileID: 1704106534078235677}
 --- !u!114 &3212966619105099590
 MonoBehaviour:
@@ -405,11 +401,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
-  moveSpeed: 0
+  MoveData: {fileID: 11400000, guid: 556c0bc676cec874c869be3e1d2532c4, type: 2}
   moveVel: {x: 0, y: 0, z: 0}
-  slopeMoveDir: {x: 0, y: 0, z: 0}
-  groundDrag: 6
-  airDrag: 6
   orientation: {fileID: 1704106534078235677}
 --- !u!114 &8147402610912446486
 MonoBehaviour:
@@ -424,8 +417,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
-  jumpForce: 40
-  wallJumpForce: 20
+  JumpData: {fileID: 11400000, guid: 497aa66326104d84598c53ecadc64d52, type: 2}
 --- !u!114 &4819828548957372858
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -439,10 +431,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
-  wallRunGravity: 2
-  defaultGravityScale: 5
-  currentAirGravity: 5
-  inAirGravMultiplier: 10
+  GravityData: {fileID: 11400000, guid: 39f650c1618716b4e9a31d7ed1513f88, type: 2}
 --- !u!114 &8136683810768731398
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -456,8 +445,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
-  crouchYScale: 0.75
-  downForceMultiplier: 5
+  CrouchData: {fileID: 11400000, guid: 7452063c7c9a4134284327a5d5c4bd87, type: 2}
 --- !u!114 &1704106533712321419
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -471,14 +459,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
-  sens: {x: 15, y: 15}
+  LookData: {fileID: 11400000, guid: bc5446afbbb8c554eb039f6ecf2c094c, type: 2}
+  currentTilt: 0
   orientation: {fileID: 1704106534078235677}
   camHolder: {fileID: 0}
-  fov: 90
-  wallRunFov: 110
-  wallRunFovTime: 15
-  camTilt: 20
-  camTiltTime: 15
 --- !u!114 &371612703882470563
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -505,9 +489,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
+  WallRunData: {fileID: 11400000, guid: bc4251b61af5d1a4ba182994bbbb74df, type: 2}
   orientation: {fileID: 1704106534078235677}
-  wallDist: 0.6
-  minJumpHeight: 1.5
 --- !u!114 &8056098228764978958
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -521,7 +504,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
-  propelForce: 150
+  GunstickData: {fileID: 11400000, guid: f6aef6242504bbf4fbe08d2142fd0723, type: 2}
 --- !u!114 &6742676181014923673
 MonoBehaviour:
   m_ObjectHideFlags: 0

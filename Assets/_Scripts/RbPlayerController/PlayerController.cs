@@ -6,7 +6,6 @@ using UnityEngine;
 public class PlayerController : PlayerClient
 {   
     [Header("GroundDetection")]
-    private LayerMask groundMask;
     [SerializeField] private Transform groundCheck;
     private float groundRayExtraLength = 0.4f;
     private float groundDist = 0.4f;
@@ -16,7 +15,6 @@ public class PlayerController : PlayerClient
     private void Start()
     {
         FindPlayerHeight();
-        this.groundMask = LayerMask.GetMask(EditorConstants.LAYER_GROUND, EditorConstants.LAYER_BLOCK);
         Player.rb.freezeRotation = true;
     }
 
@@ -35,7 +33,7 @@ public class PlayerController : PlayerClient
         float raycastLength = Player.playerHeight + groundRayExtraLength;
         // isGrounded = Physics.Raycast(transform.position, Vector3.down, raycastLength);
         // bottom of player
-        Player.isGrounded = Physics.CheckSphere(groundCheck.position, groundDist, groundMask);
+        Player.isGrounded = Physics.CheckSphere(groundCheck.position, groundDist, Player.Data.groundMask);
     }
 
     private void CheckIsFalling()

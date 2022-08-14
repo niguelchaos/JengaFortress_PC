@@ -206,7 +206,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1704106533712321417, guid: a28d3afccc06cf14d9c6acdc5dddc962, type: 3}
       propertyPath: m_ActionEvents.Array.size
-      value: 11
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 1704106533712321417, guid: a28d3afccc06cf14d9c6acdc5dddc962, type: 3}
       propertyPath: m_ActionEvents.Array.data[8].m_ActionId
@@ -221,6 +221,10 @@ PrefabInstance:
       value: 216117d1-d2b9-4b79-b800-dbdbec37b3b8
       objectReference: {fileID: 0}
     - target: {fileID: 1704106533712321417, guid: a28d3afccc06cf14d9c6acdc5dddc962, type: 3}
+      propertyPath: m_ActionEvents.Array.data[11].m_ActionId
+      value: a5b5e05b-7498-40eb-b69d-21b2eab319a1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1704106533712321417, guid: a28d3afccc06cf14d9c6acdc5dddc962, type: 3}
       propertyPath: m_ActionEvents.Array.data[8].m_ActionName
       value: Player/EndTurnDebug[/Keyboard/o]
       objectReference: {fileID: 0}
@@ -231,6 +235,10 @@ PrefabInstance:
     - target: {fileID: 1704106533712321417, guid: a28d3afccc06cf14d9c6acdc5dddc962, type: 3}
       propertyPath: m_ActionEvents.Array.data[10].m_ActionName
       value: Player/Escape[/Keyboard/backslash]
+      objectReference: {fileID: 0}
+    - target: {fileID: 1704106533712321417, guid: a28d3afccc06cf14d9c6acdc5dddc962, type: 3}
+      propertyPath: m_ActionEvents.Array.data[11].m_ActionName
+      value: Player/FlyMode[/Keyboard/q]
       objectReference: {fileID: 0}
     - target: {fileID: 1704106533712321417, guid: a28d3afccc06cf14d9c6acdc5dddc962, type: 3}
       propertyPath: m_ActionEvents.Array.data[4].m_PersistentCalls.m_Calls.Array.size

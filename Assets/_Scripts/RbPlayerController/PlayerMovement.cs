@@ -8,47 +8,20 @@ public class PlayerMovement : PlayerClient
     private enum State { Idle, Walk, Sprint, Crouch}
     [SerializeField] private State state = State.Idle;
 
-    [Header("Movement")]
-    [SerializeField] private float moveSpeed = 6f;
-    [SerializeField] private float walkSpeed = 6f;
-    [SerializeField] private float sprintSpeed = 24f;
-    [SerializeField] private float crouchSpeed;
-    [SerializeField] private float accelSpeed = 10f;
+    [SerializeField] private PlayerMovementData MoveData;
 
-    [SerializeField] private float groundMultiplier = 10f;
-    [SerializeField] private float airMultiplier = 0.4f;
     [SerializeField] private Vector3 moveVel;
+    [SerializeField] private float moveMag;
+    [SerializeField] private float moveSpeed;
     private Vector3 moveDir;
-
 
     [Space]
     private RaycastHit slopeHit;
-    private float slopeRayExtraLength = 1f;
-    public Vector3 slopeMoveDir;
-
-    // [Header("Drag")]
-    [Space]
-    [SerializeField] private float groundDrag = 6f;
-    [SerializeField] private float airDrag = 2f;
+    private Vector3 slopeMoveDir;
 
     [Space]
-    [SerializeField] Transform orientation;
+    [SerializeField] private Transform orientation;
 
-
-    private void Start()
-    {
-        // Player.notNetworkOwnerEvent += OnNotNetworkOwner;
-    }
-
-    // private void OnNotNetworkOwner()
-    // {
-    //     Destroy(this);
-    // }
-
-    // void OnDestroy()
-    // {
-    //     Player.notNetworkOwnerEvent -= OnNotNetworkOwner;
-    // }
 
     // Update is called once per frame
     private void Update()
@@ -72,6 +45,8 @@ public class PlayerMovement : PlayerClient
         }
         CheckSlopeMoveDir();
         ControlDrag();
+
+        moveMag = Player.rb.velocity.magnitude;
     }
 
     private void FixedUpdate()
@@ -102,7 +77,7 @@ public class PlayerMovement : PlayerClient
 
     private State UpdateWalkState()
     {
-        moveSpeed = Mathf.Lerp(moveSpeed, walkSpeed, accelSpeed * Time.deltaTime);
+        moveSpeed = Mathf.Lerp(moveSpeed, MoveData.walkSpeed, MoveData.accelSpeed * Time.deltaTime);
 
         State currentState = CheckState();
         return currentState;
@@ -111,7 +86,7 @@ public class PlayerMovement : PlayerClient
     {
         if (Player.isGrounded)
         {
-            moveSpeed = Mathf.Lerp(moveSpeed, sprintSpeed, accelSpeed * Time.deltaTime);
+            moveSpeed = Mathf.Lerp(moveSpeed, MoveData.sprintSpeed, MoveData.accelSpeed * Time.deltaTime);
         }
 
         State currentState = CheckState();
@@ -121,7 +96,7 @@ public class PlayerMovement : PlayerClient
     {
         if (Player.isGrounded)
         {
-            moveSpeed = Mathf.Lerp(moveSpeed, crouchSpeed, accelSpeed * Time.deltaTime);
+            moveSpeed = Mathf.Lerp(moveSpeed, MoveData.crouchSpeed, MoveData.accelSpeed * Time.deltaTime);
         }
 
         State currentState = CheckState();
@@ -168,6 +143,7 @@ public class PlayerMovement : PlayerClient
         
         CheckGroundedVel();
         CheckAirVel();
+
         
         Player.rb.AddForce(moveVel, ForceMode.Acceleration);
     }
@@ -178,12 +154,12 @@ public class PlayerMovement : PlayerClient
         {
             if (!Player.isOnSlope)
             {
-                this.moveVel = moveDir.normalized * moveSpeed * groundMultiplier;
+                this.moveVel = moveDir.normalized * moveSpeed * MoveData.groundMultiplier;
                 Debug.DrawRay(transform.position, moveDir.normalized * 20, Color.cyan);
             }
             else if (Player.isOnSlope)
             {
-                this.moveVel = slopeMoveDir.normalized * moveSpeed * groundMultiplier;
+                this.moveVel = slopeMoveDir.normalized * moveSpeed * MoveData.groundMultiplier;
                 Debug.DrawRay(transform.position, slopeMoveDir.normalized * 20, Color.green);
             }
         }
@@ -194,7 +170,7 @@ public class PlayerMovement : PlayerClient
         // in the air
         if (!Player.isGrounded) 
         {
-            this.moveVel = moveDir.normalized * moveSpeed * airMultiplier;
+            this.moveVel = moveDir.normalized * moveSpeed * MoveData.airMultiplier;
         }
     }
 
@@ -202,10 +178,10 @@ public class PlayerMovement : PlayerClient
     {
         if (Player.isGrounded)
         {
-            Player.rb.drag = groundDrag;
+            Player.rb.drag = MoveData.groundDrag;
         }
         else if (!Player.isGrounded) {
-            Player.rb.drag = airDrag;
+            Player.rb.drag = MoveData.airDrag;
         }
     }
 
@@ -217,8 +193,8 @@ public class PlayerMovement : PlayerClient
     private bool OnSlope()
     {
         // bool slopeRaycast = Physics.Raycast(transform.position, Vector3.down, out slopeHit, playerController.playerHeight / 2 + 0.5f);
-        bool slopeRaycast = Physics.Raycast(transform.position, Vector3.down, out slopeHit, Player.playerHeight + slopeRayExtraLength);
-        Debug.DrawRay(transform.position, Vector3.down * (Player.playerHeight + slopeRayExtraLength), Color.black);
+        bool slopeRaycast = Physics.Raycast(transform.position, Vector3.down, out slopeHit, Player.playerHeight + MoveData.slopeRayExtraLength);
+        Debug.DrawRay(transform.position, Vector3.down * (Player.playerHeight + MoveData.slopeRayExtraLength), Color.black);
 
         if (slopeRaycast) 
         {
