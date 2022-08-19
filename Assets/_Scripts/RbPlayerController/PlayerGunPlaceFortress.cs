@@ -23,7 +23,7 @@ public class PlayerGunPlaceFortress: PlayerClient
 
     private void Update()
     {
-      ReceiveInput();
+    //   ReceiveInput();
       switch(state)
       {
          case State.PLACE:
@@ -37,7 +37,7 @@ public class PlayerGunPlaceFortress: PlayerClient
 
     private State UpdatePlaceState()
     {
-        if (InputManager.Instance.fireInput && !Player.hasFired)
+        if (InputManager.Instance.fireInput)
         {
             return State.PLACE;
         }
@@ -52,11 +52,11 @@ public class PlayerGunPlaceFortress: PlayerClient
         return State.IDLE;
     }
 
-    public void ReceiveInput()
-    {
-        if (InputManager.Instance.fireInput == false)
-        {
-            Player.hasFired = false;
-        }
-    }
+    // public void ReceiveInput()
+    // {
+    //     if (InputManager.Instance.fireInput == false)
+    //     {
+    //         Player.hasFired = false;
+    //     }
+    // }
 }

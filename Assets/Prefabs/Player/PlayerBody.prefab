@@ -91,7 +91,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1704106533432326535}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 09734192d1a9761449c04c36bb20e9b7, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.5
@@ -355,6 +355,7 @@ MonoBehaviour:
   flyMode: 0
   playerHeight: 0
   cam: {fileID: 0}
+  camHolder: {fileID: 0}
   hasFired: 0
   playerNum: 0
 --- !u!114 &3206886555899336008
@@ -462,7 +463,6 @@ MonoBehaviour:
   LookData: {fileID: 11400000, guid: bc5446afbbb8c554eb039f6ecf2c094c, type: 2}
   currentTilt: 0
   orientation: {fileID: 1704106534078235677}
-  camHolder: {fileID: 0}
 --- !u!114 &371612703882470563
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -26,27 +26,30 @@ public class PlayerMovement : PlayerClient
     // Update is called once per frame
     private void Update()
     {
-        Player.isOnSlope = OnSlope();
-        // ReceiveInput();
-        switch (state)
+        if (!Player.flyMode)
         {
-            case State.Idle:
-                state = UpdateIdleState();
-                break;
-            case State.Walk:
-                state = UpdateWalkState();
-                break;
-            case State.Sprint:
-                state = UpdateSprintState();
-                break;
-            case State.Crouch:
-                state = UpdateCrouchState();
-                break;
-        }
-        CheckSlopeMoveDir();
-        ControlDrag();
+            Player.isOnSlope = OnSlope();
+            // ReceiveInput();
+            switch (state)
+            {
+                case State.Idle:
+                    state = UpdateIdleState();
+                    break;
+                case State.Walk:
+                    state = UpdateWalkState();
+                    break;
+                case State.Sprint:
+                    state = UpdateSprintState();
+                    break;
+                case State.Crouch:
+                    state = UpdateCrouchState();
+                    break;
+            }
+            CheckSlopeMoveDir();
+            ControlDrag();
 
-        moveMag = Player.rb.velocity.magnitude;
+            moveMag = Player.rb.velocity.magnitude;
+        }
     }
 
     private void FixedUpdate()

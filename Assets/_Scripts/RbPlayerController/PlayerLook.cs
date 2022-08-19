@@ -15,7 +15,7 @@ public class PlayerLook : PlayerClient
     private Vector2 mousePos;
 
     [SerializeField] Transform orientation;
-    [SerializeField] Transform camHolder;
+    // [SerializeField] Transform camHolder;
 
     
     private void Start()
@@ -66,7 +66,7 @@ public class PlayerLook : PlayerClient
     private void Look()
     {
         // only want player to rotate on y axis
-        camHolder.transform.rotation = Quaternion.Euler(rotation.x, rotation.y, currentTilt);
+        Player.camHolder.transform.rotation = Quaternion.Euler(rotation.x, rotation.y, currentTilt);
         orientation.transform.rotation = Quaternion.Euler(0, rotation.y, 0);
     }
 

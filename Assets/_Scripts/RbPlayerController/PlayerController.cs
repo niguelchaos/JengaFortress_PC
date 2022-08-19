@@ -10,7 +10,7 @@ public class PlayerController : PlayerClient
     private float groundRayExtraLength = 0.4f;
     private float groundDist = 0.4f;
 
-    private bool flyModePressed = false;
+    // private bool flyModePressed = false;
 
     private void Start()
     {
@@ -20,7 +20,7 @@ public class PlayerController : PlayerClient
 
     private void Update()
     {
-        ReceiveInput();
+        // ReceiveInput();
 
         CheckIsGrounded();
         CheckIsFalling();
@@ -49,10 +49,9 @@ public class PlayerController : PlayerClient
 
     private void HandleFlyInput()
     {
-        if (InputManager.Instance.flyModeInput && !flyModePressed)
+        if (InputManager.Instance.flyModeInput)
         {
             Player.flyMode = !Player.flyMode;
-            flyModePressed = true;
         }
     }
 
@@ -74,14 +73,14 @@ public class PlayerController : PlayerClient
         Gizmos.DrawSphere(groundCheck.position, groundDist);
     }
 
-    public void ReceiveInput()
-    {
-        // player has let go of input
-        if (InputManager.Instance.flyModeInput == false)
-        {
-            flyModePressed = false;
-        }
-    }
+    // public void ReceiveInput()
+    // {
+    //     // player has let go of input
+    //     if (InputManager.Instance.flyModeInput == false)
+    //     {
+    //         flyModePressed = false;
+    //     }
+    // }
 
 
 

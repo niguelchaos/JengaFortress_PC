@@ -23,7 +23,7 @@ public class Player : NetworkBehaviour
 
     [Header("Movement")]
     [SerializeField] public bool isGrounded;
-    [SerializeField] public bool hasJumped;
+    // [SerializeField] public bool hasJumped;
     [SerializeField] public bool isOnSlope;
     [SerializeField] public bool isFalling;
     
@@ -43,9 +43,11 @@ public class Player : NetworkBehaviour
 
     [Header("Camera")]
     [SerializeField] public Camera cam;
+    [SerializeField] public Transform camHolder;
+
 
     [Header("Weapon")]
-    [SerializeField] public bool hasFired;
+    // [SerializeField] public bool hasFired;
 
     public PlayerNum playerNum;
     

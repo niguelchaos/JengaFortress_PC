@@ -9,17 +9,9 @@ public class PlayerJump : PlayerClient
    [SerializeField] private State state = State.Idle;
    
    [SerializeField] private PlayerJumpData JumpData;
-
-
-
-   // [SerializeField] private float jumpForce = 40f;
-   // [SerializeField] private float wallJumpForce = 20f;
-
-   // [SerializeField] private bool hasJumped = false;
    
    private void Update()
    {
-      ReceiveInput();
       switch(state)
       {
          case State.Idle:
@@ -50,11 +42,11 @@ public class PlayerJump : PlayerClient
 
    private State UpdateIdleState()
    {
-      if (InputManager.Instance.jumpInput && !Player.hasJumped && Player.isGrounded)
+      if (InputManager.Instance.jumpInput && Player.isGrounded)
       {
          return State.Jumping;
       }
-      else if (InputManager.Instance.jumpInput && !Player.hasJumped && Player.isWallRunning)
+      else if (InputManager.Instance.jumpInput && Player.isWallRunning)
       {
          return State.Walljump;
       }
@@ -73,16 +65,11 @@ public class PlayerJump : PlayerClient
    }
 
 
-
-   
-   // public bool HasJumped() { return hasJumped; }
-
    private void Jump()
    {
       // print("-- jumping");
       Player.rb.velocity = new Vector3(Player.rb.velocity.x, 0, Player.rb.velocity.z);
       Player.rb.AddForce(transform.up * JumpData.jumpForce, ForceMode.Impulse);
-      Player.hasJumped = true;
       
    }
 
@@ -101,15 +88,6 @@ public class PlayerJump : PlayerClient
             Vector3 wallJumpDir = (transform.up + Player.rightWallHit.normal).normalized;
             Player.rb.velocity = new Vector3(Player.rb.velocity.x, 0, Player.rb.velocity.z);
             Player.rb.AddForce(wallJumpDir * JumpData.wallJumpForce * 100, ForceMode.Force);
-      }
-   }
-
-   public void ReceiveInput()
-   {
-      // player has let go of input
-      if (InputManager.Instance.jumpInput == false)
-      {
-         Player.hasJumped = false;
       }
    }
 }

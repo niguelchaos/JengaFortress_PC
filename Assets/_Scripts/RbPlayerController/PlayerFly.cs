@@ -23,26 +23,31 @@ public class PlayerFly : PlayerClient
     [Space]
     [SerializeField] private Transform orientation;
 
-
+    
     // Update is called once per frame
     private void Update()
     {
-        Player.isOnSlope = OnSlope();
-        // ReceiveInput();
-        switch (state)
+        if (Player.flyMode)
         {
-            case State.Idle:
-                state = UpdateIdleState();
-                break;
-            case State.Fly:
-                state = UpdateFlyState();
-                break;
-            case State.Sprint:
-                state = UpdateSprintState();
-                break;
+            Player.isOnSlope = OnSlope();
+            switch (state)
+            {
+                case State.Idle:
+                    state = UpdateIdleState();
+                    break;
+                case State.Fly:
+                    state = UpdateFlyState();
+                    break;
+                case State.Sprint:
+                    state = UpdateSprintState();
+                    break;
+            }
+            CheckSlopeMoveDir();
+            ControlDrag();
+        } 
+        else {
+            state = State.Idle;
         }
-        CheckSlopeMoveDir();
-        ControlDrag();
     }
 
     private void FixedUpdate()
@@ -111,8 +116,7 @@ public class PlayerFly : PlayerClient
     {
         this.moveDir = orientation.forward * InputManager.Instance.moveDir.y + orientation.right * InputManager.Instance.moveDir.x;
         
-        CheckGroundedVel();
-        CheckAirVel();
+        CheckVel();
         
         Player.rb.AddForce(moveVel, ForceMode.Acceleration);
     }
@@ -134,13 +138,9 @@ public class PlayerFly : PlayerClient
         }
     }
 
-    private void CheckAirVel()
+    private void CheckVel()
     {
-        // in the air
-        if (!Player.isGrounded) 
-        {
-            this.moveVel = moveDir.normalized * moveSpeed;
-        }
+        this.moveVel = moveDir.normalized * moveSpeed * MoveData.airMultiplier;
     }
 
     private void ControlDrag()

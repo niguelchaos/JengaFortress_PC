@@ -9,6 +9,12 @@ public class InputManager : MonoBehaviour
     public static InputManager Instance;
 
     private PlayerInput playerInput;
+
+    public static event Action InitPlayerInputEvent;
+    
+    [Header("Action Map Names")]
+    [SerializeField] private string playerActionMapName;
+
     private InputAction moveAction;
     private InputAction lookAction;
     private InputAction jumpAction;
@@ -35,9 +41,14 @@ public class InputManager : MonoBehaviour
     [SerializeField] public bool lockCursorInput { get; private set; }
     [SerializeField] public bool flyModeInput { get; private set; }
     // [SerializeField] public bool weaponSwap1Input { get; private set; }
-
     // debug
     [SerializeField] public bool endTurnInput { get; private set; }
+
+    // input processing
+    [SerializeField] public bool jumpPressed;
+    [SerializeField] public bool firePressed;
+    [SerializeField] public bool flyModePressed;
+
 
 
     private void OnEnable()
@@ -47,29 +58,41 @@ public class InputManager : MonoBehaviour
 
     private void OnDisable()
     {
-        if (moveAction != null) moveAction.Disable();
-        if (lookAction != null) lookAction.Disable();
-        if (jumpAction != null) jumpAction.Disable();
-        if (sprintAction != null) sprintAction.Disable();
-        if (crouchAction != null) crouchAction.Disable();
-        if (fireAction != null) fireAction.Disable();
-        if (reloadAction != null) reloadAction.Disable();
-        if (attackAction != null) attackAction.Disable();
-        if (lockCursorAction != null) lockCursorAction.Disable();
-        if (flyModeAction != null) flyModeAction.Disable();
-        if (weaponSwapActions != null) {
-            foreach (InputAction weaponAction in weaponSwapActions)
-            { weaponAction.Disable(); }   
-        }
+        // if (moveAction != null) moveAction.Disable();
+        // if (lookAction != null) lookAction.Disable();
+        // if (jumpAction != null) jumpAction.Disable();
+        // if (sprintAction != null) sprintAction.Disable();
+        // if (crouchAction != null) crouchAction.Disable();
+        // if (fireAction != null) fireAction.Disable();
+        // if (reloadAction != null) reloadAction.Disable();
+        // if (attackAction != null) attackAction.Disable();
+        // if (lockCursorAction != null) lockCursorAction.Disable();
+        // if (flyModeAction != null) flyModeAction.Disable();
+        // if (weaponSwapActions != null) {
+        //     foreach (InputAction weaponAction in weaponSwapActions)
+        //     { weaponAction.Disable(); }   
+        // }
 
-        // Debug
-        if (endTurnAction != null) endTurnAction.Disable();
+        // // Debug
+        // if (endTurnAction != null) endTurnAction.Disable();
+        
+        if (playerInput != null) playerInput.actions.FindActionMap(playerActionMapName).Disable();
+
     }
 
     private void Awake()
     {
         Instance = this;
         Debug.Log("Input Alive");
+
+        playerActionMapName = "Player";
+    }
+
+    private void Update()
+    {
+        UpdateJump();
+        UpdateFire();
+        UpdateFlyMode();
     }
 
     public void SetPlayerInput(PlayerInput playerInput)
@@ -92,24 +115,7 @@ public class InputManager : MonoBehaviour
             // debug
             endTurnAction = playerInput.actions["EndTurnDebug"];
 
-
-            moveAction.Enable();
-            lookAction.Enable();
-            jumpAction.Enable();
-            sprintAction.Enable();
-            crouchAction.Enable();
-            fireAction.Enable();
-            reloadAction.Enable();
-            attackAction.Enable();
-            lockCursorAction.Enable();
-            flyModeAction.Enable();
-            // if (weaponSwapActions.Length > 0) {
-            //     foreach (InputAction weaponAction in weaponSwapActions)
-            //     { weaponAction.Enable(); }   
-            // }
-
-            // debug
-            endTurnAction.Enable();
+            playerInput.actions.FindActionMap(playerActionMapName).Enable();
 
             print("PlayerInput Connected");
 
@@ -165,6 +171,8 @@ public class InputManager : MonoBehaviour
         // Debug
         endTurnAction.performed += OnEndTurnInput;
         endTurnAction.canceled += OnEndTurnInput;
+
+        InitPlayerInputEvent?.Invoke();
     }
 
     public void OnMoveInput(InputAction.CallbackContext context)
@@ -180,7 +188,22 @@ public class InputManager : MonoBehaviour
     public void OnJumpInput(InputAction.CallbackContext context)
     {  
         // print("started jump " + context.phase);
-        this.jumpInput = context.performed;
+
+        if (context.performed)
+        {
+            if (!jumpPressed)
+            {
+                this.jumpInput = context.performed;
+                jumpPressed = true;
+            }
+        }
+
+        if (context.canceled)
+        {
+            this.jumpInput = false;
+            jumpPressed = false;
+        }
+
     }
     
     public void OnSprintPressed(InputAction.CallbackContext context)
@@ -195,7 +218,20 @@ public class InputManager : MonoBehaviour
 
     public void OnFireInput(InputAction.CallbackContext context)
     {  
-        this.fireInput = context.performed;
+        if (context.performed)
+        {
+            if (!firePressed)
+            {
+                this.fireInput = context.performed;
+                firePressed = true;
+            }
+        }
+
+        if (context.canceled)
+        {
+            this.fireInput = false;
+            firePressed = false;
+        }
     }
 
     public void OnReloadInput(InputAction.CallbackContext context)
@@ -214,7 +250,20 @@ public class InputManager : MonoBehaviour
     }
     public void OnFlyModeInput(InputAction.CallbackContext context)
     {  
-        this.flyModeInput = context.performed;
+        if (context.performed)
+        {
+            if (!flyModePressed)
+            {
+                this.flyModeInput = context.performed;
+                flyModePressed = true;
+            }
+        }
+
+        if (context.canceled)
+        {
+            this.flyModePressed = false;
+            flyModePressed = false;
+        }
     }
     public void OnWeaponSwapInput(InputAction.CallbackContext context)
     {  
@@ -256,6 +305,37 @@ public class InputManager : MonoBehaviour
     public void OnEndTurnInput(InputAction.CallbackContext context)
     {  
         this.endTurnInput = context.performed;
+    }
+
+
+    private void UpdateJump()
+    {
+        if (jumpAction != null)
+        {
+            // not performed, but jumped
+            if (!jumpAction.triggered && jumpPressed) this.jumpInput = false;
+            if (!jumpInput) jumpPressed = false;   
+        }
+    }
+
+    private void UpdateFire()
+    {
+        if (fireAction != null)
+        {
+            // not performed, but jumped
+            if (!fireAction.triggered && firePressed) this.fireInput = false;
+            if (!fireInput) firePressed = false;   
+        }
+    }
+
+    private void UpdateFlyMode()
+    {
+        if (flyModeAction != null)
+        {
+            // not performed, but jumped
+            if (!flyModeAction.triggered && flyModePressed) this.flyModeInput = false;
+            if (!flyModeInput) flyModePressed = false;   
+        }
     }
 
     private void OnDestroy()

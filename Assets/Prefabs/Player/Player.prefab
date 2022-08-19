@@ -460,6 +460,10 @@ PrefabInstance:
       propertyPath: cam
       value: 
       objectReference: {fileID: 5778932587715105309}
+    - target: {fileID: 9124178666699362865, guid: a28d3afccc06cf14d9c6acdc5dddc962, type: 3}
+      propertyPath: camHolder
+      value: 
+      objectReference: {fileID: 5778932589244852628}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a28d3afccc06cf14d9c6acdc5dddc962, type: 3}
 --- !u!4 &9018662275796534201 stripped
