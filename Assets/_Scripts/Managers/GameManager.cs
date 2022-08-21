@@ -8,10 +8,11 @@ using Unity.Netcode;
 // state machines will be required for more complex games
 // probably each enum as a class, or sth like that
 
+// Requires refactor
+
 public enum GameState
 {
     SETUP,
-    // SET_BOUNDARIES,
     PLACE_FORTRESS,
     PLACE_CORE_BLOCK,
     PLAYING,
@@ -40,43 +41,41 @@ public enum WinCondition { HitFloor, LeaveBoundary, Both }
 public class GameManager : NetworkSingleton<GameManager>
 {
     // States
-    [SerializeField] private GameState gameState;
-    [SerializeField] private PlayingState playingState;
+    [SerializeField] private GameState _gameState;
+    [SerializeField] private PlayingState _playingState;
     [SerializeField] private CurrentPlayer _currentPlayer;
-    [SerializeField] private WinCondition winCondition;
+    [SerializeField] private WinCondition _winCondition;
 
-    public static event Action<GameState> OnBeforeGameStateChanged;
-    public static event Action<GameState> OnAfterGameStateChanged;
+    public static event Action<GameState> BeforeGameStateChanged;
+    public static event Action<GameState> AfterGameStateChanged;
+    // public static event Action<GameState> GameStateChanged;
 
-    public static event Action<GameState> OnGameStateChanged;
-    public static event Action<PlayingState> OnPlayingStateChanged;
-    public static event Action<CurrentPlayer> OnCurrentPlayerChanged;
+    public static event Action<PlayingState> PlayingStateChanged;
+    public static event Action<CurrentPlayer> CurrentPlayerChanged;
 
     
     // awake should contain self setup stuff
     protected override void Awake()
     {
         base.Awake();
-
-        currentPlayer = CurrentPlayer.PLAYER_1;
-        SetGameState(GameState.SETUP);
-        SetPlayingState(PlayingState.START_TURN);
     }
+
     private void Start()
     {
         ChangeState(GameState.SETUP);
+        currentPlayer = CurrentPlayer.PLAYER_1;
     }
 
     public void ChangeState(GameState newState)
     {
-        if (gameState == newState)
+        if (_gameState == newState)
         {
             print("Same State wtf");
         }
 
-        OnBeforeGameStateChanged?.Invoke(newState);
+        BeforeGameStateChanged?.Invoke(newState);
 
-        gameState = newState;
+        _gameState = newState;
         switch (newState) {
             case GameState.SETUP:
                 HandleSetup();
@@ -94,14 +93,14 @@ public class GameManager : NetworkSingleton<GameManager>
             throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
         }
 
-        OnAfterGameStateChanged?.Invoke(newState);
+        AfterGameStateChanged?.Invoke(newState);
     }
 
     private void HandleSetup()
     {
         // setup env, cinematics
 
-        ChangeState(GameState.PLACE_FORTRESS);
+        // ChangeState(GameState.PLACE_FORTRESS);
     }
     private void HandlePlaceFortress()
     {
@@ -125,16 +124,9 @@ public class GameManager : NetworkSingleton<GameManager>
     }
 
 
-    private void OnGameStarted()
-    {
-        SetGameState(GameState.PLACE_FORTRESS);
-    }
-
-
-
     private void UpdatePlayingState()
     {
-        switch(playingState)
+        switch(_playingState)
         {
             case PlayingState.START_TURN:
                 currentPlayer = (currentPlayer == CurrentPlayer.PLAYER_1)
@@ -145,30 +137,30 @@ public class GameManager : NetworkSingleton<GameManager>
     }
 
 
-    public void SetGameState(GameState newState)
-    {
-        gameState = newState;
+    // public void SetGameState(GameState newState)
+    // {
+    //     gameState = newState;
 
-        // has anybody subscribed to this event? if so broadcast event
-        OnGameStateChanged?.Invoke(newState);
-    }
+    //     // has anybody subscribed to this event? if so broadcast event
+    //     // GameStateChanged?.Invoke(newState);
+    // }
 
     public GameState GetGameState()
     {
-        return gameState;
+        return _gameState;
     }
 
     public void SetPlayingState(PlayingState newState)
     {
-        playingState = newState;
+        _playingState = newState;
         UpdatePlayingState();
 
-        OnPlayingStateChanged?.Invoke(newState);
+        PlayingStateChanged?.Invoke(newState);
     }
 
     public PlayingState GetPlayingState()
     {
-        return playingState;
+        return _playingState;
     }
 
     public CurrentPlayer currentPlayer
@@ -176,23 +168,18 @@ public class GameManager : NetworkSingleton<GameManager>
         get { return _currentPlayer; }
         set { 
             _currentPlayer = value; 
-            OnCurrentPlayerChanged?.Invoke(value);
+            CurrentPlayerChanged?.Invoke(value);
         }
     }
 
     public WinCondition GetWinCondition()
     {
-        return winCondition;
+        return _winCondition;
     }
 
     public void SetWinCondition(WinCondition newWinCondition)
     {
-        this.winCondition = newWinCondition; 
-    }
-
-    public void StartGame()
-    {
-        SetGameState(GameState.PLAYING);
+        this._winCondition = newWinCondition; 
     }
     
     public void ChangePlayer()

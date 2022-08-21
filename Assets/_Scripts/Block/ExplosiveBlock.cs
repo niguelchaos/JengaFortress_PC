@@ -2,10 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// Inherits from Block
 public class ExplosiveBlock : Block
-{
-    [Space]
+{   
     public GameObject explosionVFX;
     [SerializeField] private float expForce = 300f;
     [SerializeField] private float radius = 5f;
@@ -41,15 +39,19 @@ public class ExplosiveBlock : Block
             // go through list, apply explosion force to each affected block
             foreach (Collider nearbyObject in affectedColliders)
             {
-                if (nearbyObject.gameObject.layer == LayerManager.BlockLayer)
+                Rigidbody affectedRb = null;
+
+                if (nearbyObject.gameObject.layer == EditorConstants.BLOCK_LAYER)
                 {
-                    Rigidbody affectedRb = nearbyObject.GetComponent<Rigidbody>();
-                    if (affectedRb != null && affectedRb != this.rb)
-                    {
-                        // Debug.Log("exploooode");
-                        affectedRb.AddExplosionForce(expForce, explosionPos, radius, upModifier, ForceMode.Impulse);
-                    }
+                    affectedRb = nearbyObject.GetComponent<Rigidbody>();
                 }
+                
+                if (affectedRb != null && affectedRb != this.rb)
+                {
+                    // Debug.Log("exploooode");
+                    affectedRb.AddExplosionForce(expForce, explosionPos, radius, upModifier, ForceMode.Impulse);
+                }
+
             }
             hasExploded = true;
         }
@@ -79,7 +81,7 @@ public class ExplosiveBlock : Block
         if (!hasExploded)
         {
             // compare layer to block + ground layer
-            if (((1 << col.gameObject.layer) & LayerMask.GetMask(EditorConstants.LAYER_BLOCK, EditorConstants.LAYER_GROUND)) != 0)
+            if (((1 << col.gameObject.layer) & LayerMask.GetMask(EditorConstants.BLOCK_LAYER_NAME, EditorConstants.GROUND_LAYER_NAME)) != 0)
             {
                 GameObject explosionVFXObj = Instantiate(explosionVFX, transform.position, Quaternion.identity);
                 Destroy(explosionVFXObj, explosionVFXObj.GetComponent<ParticleSystem>().main.duration);

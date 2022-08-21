@@ -5,21 +5,10 @@ using Unity.Netcode;
 
 public class EndTurn : NetworkBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag(EditorConstants.TAG_PLAYER))
+        if (other.CompareTag(EditorConstants.PLAYER_TAG))
         {
             GameManager.Instance.ChangePlayer();
             print("turn ended");
@@ -38,8 +27,8 @@ public class EndTurn : NetworkBehaviour
     [ClientRpc]
     private void ChangePlayerClientRpc()
     {
-        // from all the clients, will now execute shot
-        // spawn local version of projectile on everybodys client
+        // from all the clients, will now execute
+        // update local version 
        
         if (!IsOwner)
         {

@@ -12,7 +12,7 @@ public class TriggerButton : NetworkBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag(EditorConstants.TAG_PLAYER))
+        if (other.CompareTag(EditorConstants.PLAYER_TAG))
         {
             ulong playerOwner = other.gameObject.transform.parent.GetComponent<NetworkBehaviour>().OwnerClientId;
             if (playerOwner == NetworkManager.Singleton.LocalClientId)
@@ -26,26 +26,5 @@ public class TriggerButton : NetworkBehaviour
     {
         onPressed?.Invoke();
     }
-
-    // [ServerRpc]
-    // private void RequestChangePlayerServerRpc()
-    // {
-    //     // server then calls client to execute
-    //     ChangePlayerClientRpc();
-    // }
-
-    // // can only be called by server
-    // // code within executed on all clients
-    // [ClientRpc]
-    // private void ChangePlayerClientRpc()
-    // {
-    //     // from all the clients, will now execute shot
-    //     // spawn local version of projectile on everybodys client
-       
-    //     if (!IsOwner)
-    //     {
-    //         GameManager.Instance.ChangePlayer();
-    //     }
-    // }
 
 }

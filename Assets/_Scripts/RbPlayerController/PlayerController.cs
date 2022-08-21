@@ -2,15 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
+// need to fix - currently does not control player, but only collision detection
 public class PlayerController : PlayerClient
 {   
     [Header("GroundDetection")]
     [SerializeField] private Transform groundCheck;
     private float groundRayExtraLength = 0.4f;
     private float groundDist = 0.4f;
-
-    // private bool flyModePressed = false;
 
     private void Start()
     {
@@ -20,8 +18,6 @@ public class PlayerController : PlayerClient
 
     private void Update()
     {
-        // ReceiveInput();
-
         CheckIsGrounded();
         CheckIsFalling();
 
@@ -49,7 +45,7 @@ public class PlayerController : PlayerClient
 
     private void HandleFlyInput()
     {
-        if (InputManager.Instance.flyModeInput)
+        if (InputManager.Instance.flyModePressed)
         {
             Player.flyMode = !Player.flyMode;
         }
@@ -72,16 +68,5 @@ public class PlayerController : PlayerClient
         Gizmos.color = Color.yellow;
         Gizmos.DrawSphere(groundCheck.position, groundDist);
     }
-
-    // public void ReceiveInput()
-    // {
-    //     // player has let go of input
-    //     if (InputManager.Instance.flyModeInput == false)
-    //     {
-    //         flyModePressed = false;
-    //     }
-    // }
-
-
 
 }

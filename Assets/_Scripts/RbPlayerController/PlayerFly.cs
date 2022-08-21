@@ -12,9 +12,9 @@ public class PlayerFly : PlayerClient
 
 
     [Header("Movement")]
-    [SerializeField] private Vector3 moveVel;
-    private float moveSpeed;
-    private Vector3 moveDir;
+    [SerializeField] private Vector3 vel;
+    private float speed;
+    [SerializeField] private Vector3 dir;
 
     [Space]
     private RaycastHit slopeHit;
@@ -29,7 +29,6 @@ public class PlayerFly : PlayerClient
     {
         if (Player.flyMode)
         {
-            Player.isOnSlope = OnSlope();
             switch (state)
             {
                 case State.Idle:
@@ -42,7 +41,6 @@ public class PlayerFly : PlayerClient
                     state = UpdateSprintState();
                     break;
             }
-            CheckSlopeMoveDir();
             ControlDrag();
         } 
         else {
@@ -73,14 +71,14 @@ public class PlayerFly : PlayerClient
 
     private State UpdateFlyState()
     {
-        moveSpeed = Mathf.Lerp(moveSpeed, MoveData.walkSpeed, MoveData.accelSpeed * Time.deltaTime);
+        speed = Mathf.Lerp(speed, MoveData.flyWalkSpeed, MoveData.accelSpeed * Time.deltaTime);
 
         State currentState = CheckState();
         return currentState;
     }
     private State UpdateSprintState()
     {
-        moveSpeed = Mathf.Lerp(moveSpeed, MoveData.sprintSpeed, MoveData.accelSpeed * Time.deltaTime);
+        speed = Mathf.Lerp(speed, MoveData.flySprintSpeed, MoveData.accelSpeed * Time.deltaTime);
 
         State currentState = CheckState();
         return currentState;
@@ -97,7 +95,8 @@ public class PlayerFly : PlayerClient
 
     private State CheckState()
     {
-        if ( !InputManager.Instance.isSprinting && InputManager.Instance.moveDir != Vector2.zero)
+        if ( !InputManager.Instance.isSprinting && 
+                (InputManager.Instance.moveDir != Vector2.zero || InputManager.Instance.jumpHeld || InputManager.Instance.isCrouching ) )
         {
             return State.Fly;
         }
@@ -114,33 +113,24 @@ public class PlayerFly : PlayerClient
 
     private void Move()
     {
-        this.moveDir = orientation.forward * InputManager.Instance.moveDir.y + orientation.right * InputManager.Instance.moveDir.x;
+        float upDir = 0, downDir = 0;
+        if (InputManager.Instance.jumpHeld) upDir = 1;
+        if (InputManager.Instance.isCrouching) downDir = 1;
+
+        this.dir = (Player.camHolder.forward * InputManager.Instance.moveDir.y) + 
+                    (Player.camHolder.right * InputManager.Instance.moveDir.x) + 
+                    (Player.camHolder.up * upDir) +
+                    (-Player.camHolder.up * downDir);
+        // Debug.DrawRay(Player.camHolder.position, Player.camHolder.forward * 20, Color.blue);
         
-        CheckVel();
+        CheckVelocity();
         
-        Player.rb.AddForce(moveVel, ForceMode.Acceleration);
+        Player.rb.AddForce(vel, ForceMode.Acceleration);
     }
 
-    private void CheckGroundedVel()
+    private void CheckVelocity()
     {
-        if (Player.isGrounded)
-        {
-            if (!Player.isOnSlope)
-            {
-                this.moveVel = moveDir.normalized * moveSpeed;
-                Debug.DrawRay(transform.position, moveDir.normalized * 20, Color.cyan);
-            }
-            else if (Player.isOnSlope)
-            {
-                this.moveVel = slopeMoveDir.normalized * moveSpeed;
-                Debug.DrawRay(transform.position, slopeMoveDir.normalized * 20, Color.green);
-            }
-        }
-    }
-
-    private void CheckVel()
-    {
-        this.moveVel = moveDir.normalized * moveSpeed * MoveData.airMultiplier;
+        this.vel = dir.normalized * speed * MoveData.airMultiplier;
     }
 
     private void ControlDrag()
@@ -152,31 +142,6 @@ public class PlayerFly : PlayerClient
         else if (!Player.isGrounded) {
             Player.rb.drag = MoveData.airDrag;
         }
-    }
-
-    private void CheckSlopeMoveDir()
-    {
-        slopeMoveDir = Vector3.ProjectOnPlane(moveDir, slopeHit.normal);
-    }
-
-    private bool OnSlope()
-    {
-        // bool slopeRaycast = Physics.Raycast(transform.position, Vector3.down, out slopeHit, playerController.playerHeight / 2 + 0.5f);
-        bool slopeRaycast = Physics.Raycast(transform.position, Vector3.down, out slopeHit, Player.playerHeight + MoveData.slopeRayExtraLength);
-        Debug.DrawRay(transform.position, Vector3.down * (Player.playerHeight + MoveData.slopeRayExtraLength), Color.black);
-
-        if (slopeRaycast) 
-        {
-            if (slopeHit.normal != Vector3.up)
-            {
-                return true;
-            } 
-            else 
-            {
-                return false;
-            }
-        }
-        return false;
     }
 
 

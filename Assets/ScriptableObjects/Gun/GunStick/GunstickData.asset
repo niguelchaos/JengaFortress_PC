@@ -9,8 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3edfdcc05846e794280e44d1a6c12274, type: 3}
-  m_Name: PlayerJump
+  m_Script: {fileID: 11500000, guid: 160c21a899b27694694c5e4a3bb2c92d, type: 3}
+  m_Name: GunstickData
   m_EditorClassIdentifier: 
-  jumpForce: 40
-  wallJumpForce: 20
+  name: Gunstick
+  damage: 35
+  maxDistance: 10000
+  currentAmmo: 582
+  magSize: 999
+  fireRate: 150
+  reloadTime: 2.5
+  fireBlockForce: 6000

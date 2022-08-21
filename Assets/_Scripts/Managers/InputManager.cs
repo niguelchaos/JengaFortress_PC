@@ -4,10 +4,8 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class InputManager : MonoBehaviour
+public class InputManager : PersistentSingleton<InputManager>
 {
-    public static InputManager Instance;
-
     private PlayerInput playerInput;
 
     public static event Action InitPlayerInputEvent;
@@ -32,22 +30,22 @@ public class InputManager : MonoBehaviour
 
     [SerializeField] public Vector2 moveDir { get; private set; }
     [SerializeField] public Vector2 lookInput { get; private set; }
-    [SerializeField] public bool jumpInput { get; private set; }
+    [SerializeField] public bool jumpPressed { get; private set; }
     [SerializeField] public bool isSprinting { get; private set; }
     [SerializeField] public bool isCrouching { get; private set; }
-    [SerializeField] public bool fireInput { get; private set; }
+    [SerializeField] public bool firePressed { get; private set; }
     [SerializeField] public bool reloadInput { get; private set; }
     [SerializeField] public bool attackInput { get; private set; }
     [SerializeField] public bool lockCursorInput { get; private set; }
-    [SerializeField] public bool flyModeInput { get; private set; }
+    [SerializeField] public bool flyModePressed { get; private set; }
     // [SerializeField] public bool weaponSwap1Input { get; private set; }
     // debug
     [SerializeField] public bool endTurnInput { get; private set; }
 
     // input processing
-    [SerializeField] public bool jumpPressed;
-    [SerializeField] public bool firePressed;
-    [SerializeField] public bool flyModePressed;
+    [SerializeField] public bool jumpHeld { get; private set; }
+    [SerializeField] public bool fireHeld { get; private set; }
+    [SerializeField] public bool flyModeHeld { get; private set; }
 
 
 
@@ -57,32 +55,13 @@ public class InputManager : MonoBehaviour
     } 
 
     private void OnDisable()
-    {
-        // if (moveAction != null) moveAction.Disable();
-        // if (lookAction != null) lookAction.Disable();
-        // if (jumpAction != null) jumpAction.Disable();
-        // if (sprintAction != null) sprintAction.Disable();
-        // if (crouchAction != null) crouchAction.Disable();
-        // if (fireAction != null) fireAction.Disable();
-        // if (reloadAction != null) reloadAction.Disable();
-        // if (attackAction != null) attackAction.Disable();
-        // if (lockCursorAction != null) lockCursorAction.Disable();
-        // if (flyModeAction != null) flyModeAction.Disable();
-        // if (weaponSwapActions != null) {
-        //     foreach (InputAction weaponAction in weaponSwapActions)
-        //     { weaponAction.Disable(); }   
-        // }
-
-        // // Debug
-        // if (endTurnAction != null) endTurnAction.Disable();
-        
+    {     
         if (playerInput != null) playerInput.actions.FindActionMap(playerActionMapName).Disable();
-
     }
 
-    private void Awake()
+    protected override void Awake()
     {
-        Instance = this;
+        base.Awake();
         Debug.Log("Input Alive");
 
         playerActionMapName = "Player";
@@ -191,19 +170,18 @@ public class InputManager : MonoBehaviour
 
         if (context.performed)
         {
-            if (!jumpPressed)
+            if (!jumpHeld)
             {
-                this.jumpInput = context.performed;
-                jumpPressed = true;
+                this.jumpPressed = context.performed;
             }
         }
 
         if (context.canceled)
         {
-            this.jumpInput = false;
-            jumpPressed = false;
+            this.jumpPressed = false;
         }
-
+        
+        jumpHeld = context.performed;
     }
     
     public void OnSprintPressed(InputAction.CallbackContext context)
@@ -220,18 +198,18 @@ public class InputManager : MonoBehaviour
     {  
         if (context.performed)
         {
-            if (!firePressed)
+            if (!fireHeld)
             {
-                this.fireInput = context.performed;
-                firePressed = true;
+                this.firePressed = context.performed;
             }
         }
 
         if (context.canceled)
         {
-            this.fireInput = false;
-            firePressed = false;
+            this.firePressed = false;
         }
+
+        fireHeld = context.performed;
     }
 
     public void OnReloadInput(InputAction.CallbackContext context)
@@ -252,18 +230,18 @@ public class InputManager : MonoBehaviour
     {  
         if (context.performed)
         {
-            if (!flyModePressed)
+            if (!flyModeHeld)
             {
-                this.flyModeInput = context.performed;
-                flyModePressed = true;
+                this.flyModePressed = context.performed;
             }
         }
 
         if (context.canceled)
         {
             this.flyModePressed = false;
-            flyModePressed = false;
         }
+
+        this.flyModeHeld = context.performed;
     }
     public void OnWeaponSwapInput(InputAction.CallbackContext context)
     {  
@@ -277,8 +255,9 @@ public class InputManager : MonoBehaviour
             InputAction newWeaponSwapAction = new InputAction(name: "WeaponSwap" + (i+1), binding:"<Keyboard>/" + (i+1));
             weaponSwapActions.Add(newWeaponSwapAction);
             newWeaponSwapAction.Enable();
+            
             newWeaponSwapAction.performed += OnWeaponSwapInput;
-            print("added " + i);
+            // print("added " + i);
         }
     }
 
@@ -297,7 +276,6 @@ public class InputManager : MonoBehaviour
                 Cursor.lockState = CursorLockMode.Locked;
             }
         }
-        // print("worw");
     }
 
 
@@ -313,8 +291,8 @@ public class InputManager : MonoBehaviour
         if (jumpAction != null)
         {
             // not performed, but jumped
-            if (!jumpAction.triggered && jumpPressed) this.jumpInput = false;
-            if (!jumpInput) jumpPressed = false;   
+            if (!jumpAction.triggered && jumpHeld) this.jumpPressed = false;
+            // if (!jumpPressed) jumpHeld = false;   
         }
     }
 
@@ -322,9 +300,13 @@ public class InputManager : MonoBehaviour
     {
         if (fireAction != null)
         {
-            // not performed, but jumped
-            if (!fireAction.triggered && firePressed) this.fireInput = false;
-            if (!fireInput) firePressed = false;   
+                
+            // if (fireAction.triggered) print("fire triggered");
+            if (!fireAction.triggered && fireHeld) 
+            {
+                this.firePressed = false;
+            }
+            if (!firePressed) fireHeld = false;   
         }
     }
 
@@ -332,9 +314,8 @@ public class InputManager : MonoBehaviour
     {
         if (flyModeAction != null)
         {
-            // not performed, but jumped
-            if (!flyModeAction.triggered && flyModePressed) this.flyModeInput = false;
-            if (!flyModeInput) flyModePressed = false;   
+            if (!flyModeAction.triggered && flyModeHeld) this.flyModePressed = false;
+            if (!flyModePressed) flyModeHeld = false;   
         }
     }
 

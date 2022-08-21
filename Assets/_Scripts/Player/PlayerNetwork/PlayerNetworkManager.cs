@@ -3,13 +3,13 @@ using UnityEngine;
 using Unity.Netcode;
 using System;
 
+    /// <summary>
+    ///    Handles connecting only the client's player object to input, makes sure spawned correctly
+    /// </summary>
+
 public class PlayerNetworkManager : NetworkBehaviour
 {
     [SerializeField] private Player player;
-
-    // [Header("Network")]
-    // public static Action<ulong> notNetworkOwnerEvent;
-
 
     private void Start()
     {

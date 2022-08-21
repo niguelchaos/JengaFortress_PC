@@ -1,8 +1,7 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+
+// also currently unused 
 
 public class UIManager : MonoBehaviour
 {
@@ -12,16 +11,16 @@ public class UIManager : MonoBehaviour
     private void Start()
     {
         LobbyManager.LobbyEntered += OnMatchFound;
-
-        if (menuCanvas == null)
-        {
-            menuCanvas = GameObject.Find("MenuCanvas");
-        }
     }
 
     private void OnMatchFound()
     {
         menuCanvas.SetActive(false);
+    }
+
+    private void OnCurrentPlayerChanged()
+    {
+        
     }
 
     private void OnDestroy()

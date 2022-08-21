@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
+// TODO: ultra refactor
 
 public class HiddenCoreBlock : MonoBehaviour
 {
@@ -23,8 +23,8 @@ public class HiddenCoreBlock : MonoBehaviour
         player = gameObject.transform.parent.gameObject.GetComponent<Player>();
         
         // subscribe to state changes
-        GameManager.OnGameStateChanged += UpdateOnGameStateChanged;
-        GameManager.OnCurrentPlayerChanged += UpdateOnCurrentPlayerChanged;
+        GameManager.BeforeGameStateChanged += UpdateOnGameStateChanged;
+        GameManager.CurrentPlayerChanged += UpdateOnCurrentPlayerChanged;
 
     }
 
@@ -40,17 +40,17 @@ public class HiddenCoreBlock : MonoBehaviour
     private void OnDestroy()
     {
         // unsubscribe if destroy obj
-        GameManager.OnGameStateChanged -= UpdateOnGameStateChanged;
+        GameManager.BeforeGameStateChanged -= UpdateOnGameStateChanged;
     }
 
     private void OnCollisionEnter(Collision col)
     {
-        if (col.gameObject.layer == LayerManager.GroundLayer)
+        if (col.gameObject.layer == EditorConstants.GROUND_LAYER)
         {
             // Debug.Log("hit ground");
             if (GameManager.Instance.GetWinCondition() == WinCondition.HitFloor)
             {
-                GameManager.Instance.SetGameState(GameState.GAME_OVER);
+                GameManager.Instance.ChangeState(GameState.GAME_OVER);
             }
         }
     }

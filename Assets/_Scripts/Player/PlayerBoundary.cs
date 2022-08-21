@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+    /// <summary>
+    ///     messiest shit in history, unused 
+    /// </summary>
+
 public class PlayerBoundary : MonoBehaviour
 {
     //[SerializeField] private Player player;
@@ -23,7 +27,7 @@ public class PlayerBoundary : MonoBehaviour
         // sessionOrigin = GameObject.Find("AR Session Origin");
         // setup = sessionOrigin.GetComponent<Setup>();
         
-        GameManager.OnGameStateChanged += UpdateOnGameStateChanged;
+        GameManager.BeforeGameStateChanged += UpdateOnGameStateChanged;
     }
 
     private void UpdateOnGameStateChanged(GameState gameState)

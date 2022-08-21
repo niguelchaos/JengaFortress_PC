@@ -17,8 +17,7 @@ public class Gun : NetworkBehaviour
     [SerializeField] private float fireRateTime; 
     [SerializeField] private float currentReloadTime; 
 
-    [SerializeField] private GameObject projectile;    // this is a reference to your projectile prefab
-    [SerializeField] private float fireBlockForce = 10000;
+    [SerializeField] private GameObject projectile; 
 
     public static Action<GameObject> propelActionEvent;
     
@@ -83,6 +82,7 @@ public class Gun : NetworkBehaviour
     {
         return State.Idle;
     }
+
     private State UpdateFiringState()
     {
         // fire rate limit
@@ -96,6 +96,7 @@ public class Gun : NetworkBehaviour
             return State.Firing;
         }
     }
+    
     private State UpdateReloadState()
     {
         // reloading done
@@ -135,11 +136,11 @@ public class Gun : NetworkBehaviour
     private void OnGunShot()
     {
         // fire for ourselves first
-        FireProjectile(muzzle.transform.position, fireBlockForce);
+        FireProjectile(muzzle.transform.position, gunData.fireBlockForce);
         // print("Firing for Self ");
 
         // request server: i just pressed button, spawn projectile from location
-        RequestGunshotServerRpc(muzzle.transform.position, fireBlockForce);
+        RequestGunshotServerRpc(muzzle.transform.position, gunData.fireBlockForce);
 
         propelActionEvent?.Invoke(muzzle);
     }
@@ -148,7 +149,7 @@ public class Gun : NetworkBehaviour
     {
         Transform spawnTransform = muzzle.transform;
         GameObject spawnedProjectile = Instantiate(projectile, spawnTransform.position, spawnTransform.rotation);
-        spawnedProjectile.GetComponent<Rigidbody>().AddForce(spawnTransform.forward * fireBlockForce, ForceMode.Impulse);
+        spawnedProjectile.GetComponent<Rigidbody>().AddForce(spawnTransform.forward * gunData.fireBlockForce, ForceMode.Impulse);
     }
 
     private bool CanFire()
@@ -209,7 +210,6 @@ public class Gun : NetworkBehaviour
        
         if (!IsOwner)
         {
-            // print("Firing client ");
             FireProjectile(dir, fireForce);
         }
     }

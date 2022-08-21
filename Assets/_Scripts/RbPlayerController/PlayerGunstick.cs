@@ -27,13 +27,13 @@ public class PlayerGunstick : PlayerClient
 
    private void Update()
    {
-      // ReceiveInput();
       switch(state)
       {
          case State.Idle:
             state = UpdateIdleState();
             break;
          case State.Fire:
+            Fire();
             state = UpdateFireState();
             break;
          case State.Reloading:
@@ -49,7 +49,6 @@ public class PlayerGunstick : PlayerClient
          case State.Idle:
             break;
          case State.Fire:
-            Fire();
             break;
          case State.Reloading:
             break;
@@ -58,7 +57,7 @@ public class PlayerGunstick : PlayerClient
 
    private State UpdateIdleState()
    {
-      if (InputManager.Instance.fireInput)
+      if (InputManager.Instance.firePressed)
       {
          return State.Fire;
       }
@@ -85,7 +84,7 @@ public class PlayerGunstick : PlayerClient
 
    private void Fire()
    {
-      fireActionEvent?.Invoke();  
+      fireActionEvent?.Invoke();
    }
 
    private void Propel(GameObject muzzle)
@@ -101,12 +100,4 @@ public class PlayerGunstick : PlayerClient
       Debug.DrawLine (playerPos, playerPos + dir * 10, Color.red, Mathf.Infinity);
       return dir;
    }
-
-   // public void ReceiveInput()
-   // {
-   //    if (InputManager.Instance.fireInput == false)
-   //    {
-   //       Player.hasFired = false;
-   //    }
-   // }
 }

@@ -6,6 +6,8 @@ using TMPro;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
 
+// Unused, relic of the past 
+
 public class DebugUI : MonoBehaviour
 {
     public TMP_Text currentGameStateText;
@@ -19,8 +21,8 @@ public class DebugUI : MonoBehaviour
 
     private void Start()
     {
-        GameManager.OnGameStateChanged += OnGameStateChanged;
-        GameManager.OnPlayingStateChanged += OnPlayingStateChanged;
+        GameManager.BeforeGameStateChanged += OnGameStateChanged;
+        GameManager.PlayingStateChanged += OnPlayingStateChanged;
         // LobbyManager.LobbyUpdateStateEvent += OnLobbyUpdateState;
         // LobbyManager.Instance.MatchHostedEvent += OnMatchFound;
 
@@ -91,8 +93,7 @@ public class DebugUI : MonoBehaviour
 
     private void OnDestroy()
     {
-        GameManager.OnGameStateChanged -= OnGameStateChanged;
-        GameManager.OnPlayingStateChanged -= OnPlayingStateChanged;
-        // LobbyManager.LobbyUpdateStateEvent -= OnLobbyUpdateState;
+        GameManager.BeforeGameStateChanged -= OnGameStateChanged;
+        GameManager.PlayingStateChanged -= OnPlayingStateChanged;
     }
 }

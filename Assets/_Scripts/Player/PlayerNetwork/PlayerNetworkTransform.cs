@@ -2,6 +2,10 @@ using Unity;
 using UnityEngine;
 using Unity.Netcode;
 
+    /// <summary>
+    ///     part of tutorial to learn how transforms synced, not used yet
+    /// </summary>
+
 public class PlayerNetworkTransform : NetworkBehaviour
 {
     // private readonly NetworkVariable<PlayerNetworkState> _playerState = new(writePerm: NetworkVariableWritePermission.Owner);

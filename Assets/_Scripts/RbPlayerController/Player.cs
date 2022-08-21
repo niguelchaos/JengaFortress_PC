@@ -44,6 +44,7 @@ public class Player : NetworkBehaviour
     [Header("Camera")]
     [SerializeField] public Camera cam;
     [SerializeField] public Transform camHolder;
+    [SerializeField] public Transform weaponHolder;
 
 
     [Header("Weapon")]
@@ -52,16 +53,11 @@ public class Player : NetworkBehaviour
     public PlayerNum playerNum;
     
 
-
-
-    
-
-
     private void Awake()
     {
         this.playerInput = GetComponent<PlayerInput>();
         rb = GetComponent<Rigidbody>();
-        Data.groundMask = LayerMask.GetMask(EditorConstants.LAYER_GROUND, EditorConstants.LAYER_BLOCK);
+        Data.groundMask = LayerMask.GetMask(EditorConstants.GROUND_LAYER_NAME, EditorConstants.BLOCK_LAYER_NAME);
     }
 
     private void Start()

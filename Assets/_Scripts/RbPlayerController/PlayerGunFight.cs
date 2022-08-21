@@ -59,14 +59,4 @@ public class PlayerGunFight : PlayerClient
    {
       return State.Idle;
    }
-
-
-
-   // public void ReceiveInput()
-   // {
-   //    if (InputManager.Instance.attackInput == false)
-   //    {
-   //       Player.hasAttacked = false;
-   //    }
-   // }
 }

@@ -17,4 +17,6 @@ public class GunData : ScriptableObject
     public float fireRate;
     public float reloadTime;
 
+    public float fireBlockForce = 10000;
+
 }

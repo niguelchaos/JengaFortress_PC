@@ -3,16 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public enum State
-{
-    IDLE,
-    PLACE, 
-    SELECT,
-    MOVE
-}
+
 
 public class PlayerGunPlaceFortress: PlayerClient 
 {
+    public enum State
+    {   IDLE, PLACE, SELECT, MOVE }
+
     [SerializeField] private State state = State.PLACE;
 
     public static Action placeFortressActionEvent;
@@ -23,7 +20,6 @@ public class PlayerGunPlaceFortress: PlayerClient
 
     private void Update()
     {
-    //   ReceiveInput();
       switch(state)
       {
          case State.PLACE:
@@ -37,7 +33,7 @@ public class PlayerGunPlaceFortress: PlayerClient
 
     private State UpdatePlaceState()
     {
-        if (InputManager.Instance.fireInput)
+        if (InputManager.Instance.firePressed)
         {
             return State.PLACE;
         }
@@ -52,11 +48,4 @@ public class PlayerGunPlaceFortress: PlayerClient
         return State.IDLE;
     }
 
-    // public void ReceiveInput()
-    // {
-    //     if (InputManager.Instance.fireInput == false)
-    //     {
-    //         Player.hasFired = false;
-    //     }
-    // }
 }

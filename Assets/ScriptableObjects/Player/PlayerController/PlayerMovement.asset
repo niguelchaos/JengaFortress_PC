@@ -12,10 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7d1fe1a40918ce42b2d1267b9078006, type: 3}
   m_Name: PlayerMovement
   m_EditorClassIdentifier: 
-  walkSpeed: 70
-  sprintSpeed: 140
+  walkSpeed: 130
+  sprintSpeed: 250
   crouchSpeed: 55
   accelSpeed: 5
+  flyWalkSpeed: 120
+  flySprintSpeed: 300
   groundMultiplier: 1
   airMultiplier: 0.9
   groundDrag: 6

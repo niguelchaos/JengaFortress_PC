@@ -13,9 +13,11 @@ using Unity.Netcode;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
+
+// Lobby code taken and adapted from Tarodevs tut
+
 public class LobbyManager : NetworkBehaviour
 {
-    // public static LobbyManager Instance;
     [SerializeField] private MainLobbyScreen _mainLobbyScreen;
     [SerializeField] private CreateLobbyScreen _createScreen;
     [SerializeField] private RoomScreen _roomScreen;
@@ -28,19 +30,6 @@ public class LobbyManager : NetworkBehaviour
     
     // Notify Match found
     public static event Action LobbyEntered;
-
-    
-
-    private void Awake()
-    {
-        // if (Instance is null)
-        // {
-        //     Instance = this;
-        //     return;
-        // }
-
-        // Destroy(this);
-    }
 
     private void Start()
     {

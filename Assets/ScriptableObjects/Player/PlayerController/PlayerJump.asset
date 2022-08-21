@@ -9,10 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fceaae89bfc59454dbb5e908e02fc49f, type: 3}
-  m_Name: PlayerGravity
+  m_Script: {fileID: 11500000, guid: 3edfdcc05846e794280e44d1a6c12274, type: 3}
+  m_Name: PlayerJump
   m_EditorClassIdentifier: 
-  wallRunGravity: 2
-  defaultGravityScale: 5
-  currentAirGravity: 5
-  inAirGravMultiplier: 10
+  jumpForce: 70
+  wallJumpForce: 40

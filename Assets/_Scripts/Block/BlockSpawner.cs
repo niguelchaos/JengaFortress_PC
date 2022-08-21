@@ -25,7 +25,7 @@ public class BlockSpawner : NetworkBehaviour
     
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag(EditorConstants.TAG_PLAYER))
+        if (other.CompareTag(EditorConstants.PLAYER_TAG))
         {
             SpawnObjects();
         }

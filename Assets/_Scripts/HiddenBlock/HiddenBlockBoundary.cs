@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// TODO: ultra refactor needed
+
 public class HiddenBlockBoundary : MonoBehaviour
 {
     [SerializeField] private Player player;
@@ -23,8 +25,8 @@ public class HiddenBlockBoundary : MonoBehaviour
         GetPlayerHbGO();
         // StartCoroutine(WaitToAttach(2));
 
-        GameManager.OnGameStateChanged += UpdateOnGameStateChanged;
-        GameManager.OnCurrentPlayerChanged += UpdateOnCurrentPlayerChanged;
+        GameManager.BeforeGameStateChanged += UpdateOnGameStateChanged;
+        GameManager.CurrentPlayerChanged += UpdateOnCurrentPlayerChanged;
     }
 
     private void OnEnable()

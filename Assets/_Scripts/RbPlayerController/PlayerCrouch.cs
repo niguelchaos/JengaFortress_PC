@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerCrouch : PlayerClient
 {
-   private enum State { Idle, Crouching}
+   private enum State { Idle, Crouching }
    [SerializeField] private State state = State.Idle;
    [SerializeField] private PlayerCrouchData CrouchData;
 

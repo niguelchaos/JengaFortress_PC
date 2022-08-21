@@ -42,11 +42,11 @@ public class PlayerJump : PlayerClient
 
    private State UpdateIdleState()
    {
-      if (InputManager.Instance.jumpInput && Player.isGrounded)
+      if (InputManager.Instance.jumpPressed && Player.isGrounded)
       {
          return State.Jumping;
       }
-      else if (InputManager.Instance.jumpInput && Player.isWallRunning)
+      else if (InputManager.Instance.jumpPressed && Player.isWallRunning)
       {
          return State.Walljump;
       }

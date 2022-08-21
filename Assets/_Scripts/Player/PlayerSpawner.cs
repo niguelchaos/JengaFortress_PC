@@ -5,19 +5,17 @@ using UnityEngine;
 using Unity.Netcode;
 using UnityEngine.SceneManagement;
 
+    /// <summary>
+    ///     Spawns the player, synced across network
+    /// </summary>
+
 public class PlayerSpawner : NetworkBehaviour
 {
     [SerializeField] private GameObject _playerPrefab;
     [SerializeField] private GameObject _spawnLocation;
 
     private void Start()
-    {
-        // set to main menu
-        // NetworkManager.Singleton.OnClientConnectedCallback += OnLobbyEnteredClient;
-        // NetworkManager.Singleton.OnServerStarted += OnLobbyEnteredServer;
-        // print("spawner subbed");
-
-        
+    {        
     }
 
     public override void OnNetworkSpawn() 

@@ -123,6 +123,7 @@ GameObject:
   - component: {fileID: 8154514619484896997}
   - component: {fileID: 8056098228764978958}
   - component: {fileID: 6742676181014923673}
+  - component: {fileID: 8642922085716443652}
   m_Layer: 0
   m_Name: PlayerBody
   m_TagString: Player
@@ -345,7 +346,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Data: {fileID: 11400000, guid: c6fecf078b3d2fc479de95fdbb01d158, type: 2}
   isGrounded: 0
-  hasJumped: 0
   isOnSlope: 0
   isFalling: 0
   isWallRunning: 0
@@ -356,7 +356,6 @@ MonoBehaviour:
   playerHeight: 0
   cam: {fileID: 0}
   camHolder: {fileID: 0}
-  hasFired: 0
   playerNum: 0
 --- !u!114 &3206886555899336008
 MonoBehaviour:
@@ -403,7 +402,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   MoveData: {fileID: 11400000, guid: 556c0bc676cec874c869be3e1d2532c4, type: 2}
-  moveVel: {x: 0, y: 0, z: 0}
+  vel: {x: 0, y: 0, z: 0}
+  dir: {x: 0, y: 0, z: 0}
   orientation: {fileID: 1704106534078235677}
 --- !u!114 &8147402610912446486
 MonoBehaviour:
@@ -517,7 +517,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d1c32d29eac96e47909763aeb990020, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  state: 1
+  state: 0
+--- !u!114 &8642922085716443652
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1704106533712321423}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 106369a08035bc84aadb2a8df8130a80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  state: 0
+  HBPrefab: {fileID: 5538402618506769679, guid: a4ba1476caebdda4782246f3201c79e7, type: 3}
 --- !u!1 &1704106534078235678
 GameObject:
   m_ObjectHideFlags: 0

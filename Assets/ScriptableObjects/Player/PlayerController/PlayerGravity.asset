@@ -9,13 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 160c21a899b27694694c5e4a3bb2c92d, type: 3}
-  m_Name: GunstickData
+  m_Script: {fileID: 11500000, guid: fceaae89bfc59454dbb5e908e02fc49f, type: 3}
+  m_Name: PlayerGravity
   m_EditorClassIdentifier: 
-  name: Gunstick
-  damage: 35
-  maxDistance: 10000
-  currentAmmo: 999
-  magSize: 999
-  fireRate: 150
-  reloadTime: 2.5
+  wallRunGravity: 2
+  defaultGravityScale: 5
+  currentAirGravity: 5
+  inAirGravMultiplier: 23

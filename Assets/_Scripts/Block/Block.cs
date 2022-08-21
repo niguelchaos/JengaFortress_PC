@@ -10,17 +10,13 @@ public class Block : NetworkBehaviour
     private NetworkRigidbody netRb;
     private NetworkObject netObj;
     [SerializeField] private float magnitude;
-    [SerializeField] private float changeCDMLim = 250;
+    [SerializeField] private float changeCDMLim = 250; // CDM = collision detection mode
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         netRb = GetComponent<NetworkRigidbody>();
         netObj = GetComponent<NetworkObject>();
-    }
-
-    private void Start()
-    {
     }
 
 

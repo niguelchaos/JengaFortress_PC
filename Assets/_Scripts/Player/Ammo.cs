@@ -4,6 +4,9 @@ using UnityEngine;
 
 // TODO: SKIT I DENNA HELT JUST NU, SPELAR JU FAN INGEN ROLL!
 // todo: borde troligtvis ärva från typ Item, men vem bryr sig...
+
+// nice relic of the course 10/10 requires more refactors
+
 [SerializeField]
 public class ProjectileInfo : MonoBehaviour
 {
