@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
     /// <summary>
-    ///     messiest shit in history, unused 
+    ///     messiest thing in history, unused 
     /// </summary>
 
 public class PlayerBoundary : MonoBehaviour

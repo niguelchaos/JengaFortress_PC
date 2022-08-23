@@ -1,14 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
-using System;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using Unity.Netcode;
 
 // player handling the gun
 public class GunAnimController : NetworkBehaviour
 {
-   private enum State { Idle, PointBack, Fire, Reloading}
+   // private enum State { Idle, PointBack, Fire, Reloading}
    // [SerializeField] private State state = State.Idle;
 
    private Animator animator;

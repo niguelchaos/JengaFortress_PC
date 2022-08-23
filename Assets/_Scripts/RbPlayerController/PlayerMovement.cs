@@ -9,8 +9,9 @@ public class PlayerMovement : PlayerClient
     [SerializeField] private State state = State.Idle;
 
     [SerializeField] private PlayerMovementData MoveData;
+    // there must be better way
+    [SerializeField] public Vector3 moveVel;
 
-    [SerializeField] private Vector3 moveVel;
     [SerializeField] private float moveMag;
     [SerializeField] private float moveSpeed;
     private Vector3 moveDir;
@@ -57,6 +58,8 @@ public class PlayerMovement : PlayerClient
         switch (state)
         {
             case State.Idle:
+                CheckGroundedVel();
+                CheckAirVel();
                 break;
             case State.Walk:
                 Walk();
@@ -69,11 +72,14 @@ public class PlayerMovement : PlayerClient
                 break;
         }
 
+
+
         // StronkGravity();
     }
     
     private State UpdateIdleState()
     {   
+        moveSpeed = Mathf.Lerp(moveSpeed, 0, MoveData.accelSpeed * Time.deltaTime);
         State currentState = CheckState();
         return currentState;
     }
