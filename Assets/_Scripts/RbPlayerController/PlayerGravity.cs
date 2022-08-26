@@ -8,6 +8,7 @@ public class PlayerGravity : PlayerClient
    [SerializeField] private State state = State.Normal;
 
    [SerializeField] private PlayerGravityData GravityData;
+   [SerializeField] private float currentAirGravity = 5f;
 
    private void Update()
    {
@@ -75,15 +76,15 @@ public class PlayerGravity : PlayerClient
             break;
          case State.InAir:
             Player.rb.useGravity = true;
-            GravityData.currentAirGravity = GravityData.currentAirGravity + (GravityData.inAirGravMultiplier * Time.deltaTime);
-            Player.rb.AddForce(Physics.gravity * GravityData.currentAirGravity, ForceMode.Acceleration);
+            currentAirGravity = currentAirGravity + (GravityData.inAirGravMultiplier * Time.deltaTime);
+            Player.rb.AddForce(Physics.gravity * currentAirGravity, ForceMode.Acceleration);
             break;
       }
    }
 
    private void ResetInAirGravity()
    {
-      GravityData.currentAirGravity = GravityData.defaultGravityScale;
+      currentAirGravity = GravityData.defaultGravityScale;
    }
 
 }

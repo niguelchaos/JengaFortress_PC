@@ -7,6 +7,7 @@ public class PlayerWeaponSwitch : PlayerClient
    // private enum State { One, Two }
    // [SerializeField] private State state = State.One;
 
+   [SerializeField] private Transform weaponHolder;
    [SerializeField] private Transform[] weapons;
 
    [SerializeField] private float switchTime;
@@ -34,11 +35,11 @@ public class PlayerWeaponSwitch : PlayerClient
    {
       // attached to weapon holder
       // each child is weapon
-      weapons = new Transform[transform.childCount];
+      weapons = new Transform[weaponHolder.childCount];
 
-      for (int i = 0; i < transform.childCount; i++)
+      for (int i = 0; i < weaponHolder.childCount; i++)
       {
-         weapons[i] = transform.GetChild(i);
+         weapons[i] = weaponHolder.GetChild(i);
       }
 
       // dynamically set buttons

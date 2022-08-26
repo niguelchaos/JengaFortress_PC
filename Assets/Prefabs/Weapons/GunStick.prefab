@@ -49,12 +49,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   gunData: {fileID: 11400000, guid: a49c0cefaef089c4f886227320898ad1, type: 2}
-  muzzle: {fileID: 0}
+  muzzle: {fileID: 3414328061048881055}
   timeSinceLastShot: 0
   fireRateTime: 0
   currentReloadTime: 0
   projectile: {fileID: 5909332988306558012, guid: 55828140a51d2a940adf578501b6a52d, type: 3}
-  fireBlockForce: 10000
 --- !u!95 &4595915105605357448
 Animator:
   serializedVersion: 4
@@ -87,7 +86,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e287f7eba76d8e94e83d77b760012b4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  state: 0
 --- !u!1001 &2665167258262613444
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -161,6 +159,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5056f3d43d30cf840b4eb7a6a2258e6d, type: 3}
+--- !u!1 &3414328061048881055 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 837303153719890523, guid: 5056f3d43d30cf840b4eb7a6a2258e6d, type: 3}
+  m_PrefabInstance: {fileID: 2665167258262613444}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6367999779740224688 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8981089769225199988, guid: 5056f3d43d30cf840b4eb7a6a2258e6d, type: 3}
