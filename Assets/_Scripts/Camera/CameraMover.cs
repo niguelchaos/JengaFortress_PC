@@ -21,7 +21,6 @@ public class CameraMover : NetworkBehaviour
     private void Update()
     {
         transform.position = camTransform.position;
-        // transform.rotation = camTransform.rotation;
     }
     
 }

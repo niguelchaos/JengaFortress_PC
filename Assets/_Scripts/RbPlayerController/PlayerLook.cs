@@ -14,7 +14,9 @@ public class PlayerLook : PlayerClient
     private Vector2 rotation;
     private Vector2 mousePos;
 
-    [SerializeField] Transform orientation;
+    // [SerializeField] private Transform orientation;
+    [SerializeField] private Transform cameraYaw;
+    [SerializeField] private Transform cameraPitch;
     // [SerializeField] Transform camHolder;
 
     
@@ -66,8 +68,13 @@ public class PlayerLook : PlayerClient
     private void Look()
     {
         // only want player to rotate on y axis
-        Player.camHolder.transform.rotation = Quaternion.Euler(rotation.x, rotation.y, currentTilt);
-        orientation.transform.rotation = Quaternion.Euler(0, rotation.y, 0);
+        // Player.camHolder.transform.rotation = Quaternion.Euler(rotation.x, rotation.y, currentTilt);
+        // Player.camHolder.transform.rotation = Quaternion.Euler(0, 0, currentTilt);
+        cameraYaw.transform.rotation = Quaternion.Euler(0, rotation.y, 0);
+        cameraPitch.transform.rotation = cameraYaw.transform.rotation * Quaternion.Euler(rotation.x, 0, 0);
+
+        // orientation.transform.rotation = Quaternion.Euler(0, rotation.y, 0);
+
     }
 
     private State UpdateIdleState()

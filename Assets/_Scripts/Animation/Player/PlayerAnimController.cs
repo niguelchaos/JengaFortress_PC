@@ -8,6 +8,8 @@ public class PlayerAnimController : NetworkBehaviour
    private Animator animator;
    private bool subEventsOnStart = true;
 
+   [SerializeField] private Transform cameraYaw;
+
    [SerializeField] private float animBlendSpeed = 0.08f;
    [SerializeField] private Vector3 currentVel;
    private int xVelHash, yVelHash;
@@ -42,17 +44,11 @@ public class PlayerAnimController : NetworkBehaviour
       animator.SetFloat(yVelHash, currentVel.z);
    }
 
-   // private void Windup()
-   // {
-   //    // PointBack();
-   //    // RequestWindupServerRpc();
-   // }
+   private void LateUpdate()
+   {
+      transform.rotation = cameraYaw.rotation;
+   }
 
-   // private void Slash()
-   // {
-   //    // Idle();
-   //    // RequestSlashServerRpc();
-   // }
 
    private void PointBack()
    {
